@@ -57,7 +57,7 @@ public class Board extends JPanel implements ActionListener {
                     
                     @Override
                     public void run() {
-                    	initAliens(1 + (int) (Math.random() * 1)
+                    	initAliens(5 + (int) (Math.random() * 10)
                         );
                     }
                 

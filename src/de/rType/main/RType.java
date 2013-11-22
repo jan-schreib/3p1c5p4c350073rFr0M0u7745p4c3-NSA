@@ -19,8 +19,9 @@ public class RType extends JFrame implements CollectionGame {
 
 	public RType() {
 		test = new Menu();
-		//add(test);
-		add(new Board());
+		
+		add(test);
+		//add(new Board());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1200, 768);
 		setLocationRelativeTo(null);
@@ -36,6 +37,9 @@ public class RType extends JFrame implements CollectionGame {
 	public void runGame(GlobalSettings globalSettings,
 			MainMenuInterface mainMenuRef) {
 		setVisible(true);
+		while(!test.getClicked()) {System.out.println("warte");};
+		add(new Board());
+		test.setVisible(false);
 	}
 
 	@Override

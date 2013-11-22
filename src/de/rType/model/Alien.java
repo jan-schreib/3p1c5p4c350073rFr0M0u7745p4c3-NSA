@@ -4,10 +4,13 @@ package de.rType.model;
 public class Alien extends GameObject{
 
 	int height;
+	double[] fly = new double[1201];
 
     public Alien(int x, int y) {
     	super(x,y,"../resources/alien.png",-2,1);
     	height = y;
+    	Calculation calc = new Calculation();
+    	fly = calc.calcFly(height);
     }
     
     @Override

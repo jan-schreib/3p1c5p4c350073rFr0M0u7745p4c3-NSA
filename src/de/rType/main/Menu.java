@@ -96,10 +96,7 @@ public class Menu extends JPanel {
 				repaint();
 			}
 			if (key == KeyEvent.VK_ENTER) {
-				Board b = new Board();
-				add(b);
-				b.setFocusable(true);
-				
+				clicked = true;
 			}
 		}
 	}
