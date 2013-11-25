@@ -1,18 +1,18 @@
 package de.rType.model;
+
 import java.awt.Image;
 import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-
 abstract public class GameObject {
-	private int x;
-	private int y;
-	private Rectangle hitbox;
+
+	protected int x;
+	protected int y;
+	protected Rectangle hitbox;
 	private Image image;
 	private int speed;
-	private int hp;	//Healthpoints
-
+	protected int hp; // Healthpoints
 
 	public GameObject(int x, int y, String image, int speed, int hp) {
 		this.x = x;
@@ -21,7 +21,8 @@ abstract public class GameObject {
 		this.image = i.getImage();
 		this.speed = speed;
 		this.hp = hp;
-		this.hitbox = new Rectangle(x,y,this.image.getWidth(null),this.image.getHeight(null));
+		this.hitbox = new Rectangle(x, y, this.image.getWidth(null),
+				this.image.getHeight(null));
 	}
 
 	public int getX() {
@@ -37,11 +38,17 @@ abstract public class GameObject {
 	}
 
 	public void setY(int y) {
+		y = y - hitbox.height;
+		this.y = y;
+	}
+
+	public void setPosition(int x, int y) {
+		this.x = x;
 		this.y = y;
 	}
 
 	public Rectangle getHitbox() {
-		hitbox.setLocation(x,y);
+		hitbox.setLocation(x, y);
 		return hitbox;
 	}
 
@@ -72,19 +79,19 @@ abstract public class GameObject {
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
-	
+
 	public void move() {
-        x += speed;
-        if (x > 1200 || x < 0) {
-        }
-            
+		x += speed;
+		if (x > 1200 || x < 0) {
+			hp = 0;
+		}
 	}
-	
+
+	public boolean isGoneOut() {
+		return x <= 0;
+	}
+
 	public boolean isAlive() {
 		return (hp > 0);
-	}
-	
-	public void hit() {
-		hp--;
 	}
 }

@@ -12,11 +12,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.TimerTask;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import de.rType.level.LevelOne;
 import de.rType.model.Alien;
 import de.rType.model.Craft;
 import de.rType.model.Missile;
@@ -27,46 +27,54 @@ import de.rType.model.Missile;
  * @author Jo
  * 
  */
-public class Board extends JPanel implements ActionListener {
+public abstract class GameBoard extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
 	private Timer timer;
 	private Craft craft;
 	private ArrayList<Alien> aliens = new ArrayList<Alien>();
+
 	private boolean ingame;
 	private int B_WIDTH;
 	private int B_HEIGHT;
 	public int points = 0;
 
-	public Board() {
+	public GameBoard() {
+		addKeyListener(new KeyAdapter() {
 
-		addKeyListener(new TAdapter());
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() != KeyEvent.VK_ESCAPE) {
+					craft.keyReleased(e);
+				}
+			}
+
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+					escapePressed();
+				} else {
+					craft.keyPressed(e);
+				}
+			}
+		});
 		setFocusable(true);
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
+		
 		ingame = true;
-
-		setSize(1200, 720);
-
 		craft = new Craft();
-
-		java.util.Timer t = new java.util.Timer();
-        t.schedule(
-                new TimerTask(){
-                    
-                    @Override
-                    public void run() {
-                    	initAliens(1 + (int) (Math.random() * 1)
-                        );
-                    }
-                
-                }, 
-                0, 
-                5000);
-
 		timer = new Timer(5, this);
+		new LevelOne(this);
+	}
+
+	public abstract void escapePressed();
+
+	public void start() {
 		timer.start();
+	}
+
+	public void pause() {
+		timer.stop();
 	}
 
 	public void addNotify() {
@@ -75,26 +83,15 @@ public class Board extends JPanel implements ActionListener {
 		B_HEIGHT = getHeight();
 	}
 
-	public void initAliens(int count) {
-
-		int pos = 0 + (int)(Math.random() * 720);
-
-		for (int i = 0; i < count; i++) {
-			aliens.add(new Alien(1200+(i*50), pos));
-		}
-	}
-
 	public void paint(Graphics g) {
 		super.paint(g);
-
 		if (ingame) {
 
 			Graphics2D g2d = (Graphics2D) g;
 
-			if (craft.isVisible())
-				g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(),
-						this);
-
+			if (craft.isVisible()) {
+				g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(), this);
+			}
 			ArrayList<Missile> ms = craft.getMissiles();
 
 			for (int i = 0; i < ms.size(); i++) {
@@ -104,8 +101,9 @@ public class Board extends JPanel implements ActionListener {
 
 			for (int i = 0; i < aliens.size(); i++) {
 				Alien a = (Alien) aliens.get(i);
-				if (a.isAlive())
+				if (a.isAlive()) {
 					g2d.drawImage(a.getImage(), a.getX(), a.getY(), this);
+				}
 			}
 
 			g2d.setColor(Color.WHITE);
@@ -118,8 +116,7 @@ public class Board extends JPanel implements ActionListener {
 
 			g.setColor(Color.white);
 			g.setFont(small);
-			g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2,
-					B_HEIGHT / 2);
+			g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
 		}
 
 		Toolkit.getDefaultToolkit().sync();
@@ -127,8 +124,6 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-
-		// initAliens(1 + (int)(Math.random() * 20));
 
 		ArrayList<Missile> ms = craft.getMissiles();
 
@@ -142,11 +137,13 @@ public class Board extends JPanel implements ActionListener {
 
 		for (int i = 0; i < aliens.size(); i++) {
 			Alien a = (Alien) aliens.get(i);
-			if (a.isAlive())
+			if (a.isAlive()) {
 				a.move();
-			else {
+				if (a.isGoneOut()) {
+					aliens.remove(i);
+				}
+			} else {
 				aliens.remove(i);
-				points += 10;
 			}
 		}
 
@@ -157,46 +154,44 @@ public class Board extends JPanel implements ActionListener {
 
 	public void checkCollisions() {
 
-		Rectangle r3 = craft.getBounds();
-
-		for (int j = 0; j < aliens.size(); j++) {
-			Alien a = (Alien) aliens.get(j);
-			Rectangle r2 = a.getHitbox();
-
-			if (r3.intersects(r2)) {
-				craft.setVisible(false);
-				aliens.remove(a); // a.setVisible(false);
-				ingame = false;
-			}
-		}
-
+		Rectangle hitboxCraft = craft.getBounds();
 		ArrayList<Missile> ms = craft.getMissiles();
 
-		for (int i = 0; i < ms.size(); i++) {
-			Missile m = ms.get(i);
+		for (int j = 0; j < aliens.size(); j++) {
+			Alien a = aliens.get(j);
+			Rectangle hitboxAlien = a.getHitbox();
 
-			Rectangle r1 = m.getHitbox();
+			if (hitboxCraft.intersects(hitboxAlien) && a.isAlive()) {
+				craft.setVisible(false);
+				a.criticalHit();
+				aliens.remove(a);
+				ingame = false;
+			}
 
-			for (int j = 0; j < aliens.size(); j++) {
-				Alien a = (Alien) aliens.get(j);
-				Rectangle r2 = a.getHitbox();
+			for (int i = 0; i < ms.size(); i++) {
+				Missile m = ms.get(i);
 
-				if (r1.intersects(r2)) {
-					ms.remove(m); // m.setVisible(false)
-					a.hit();
+				Rectangle hitBoxMissile = m.getHitbox();
+
+				if (hitBoxMissile.intersects(hitboxAlien) && a.isAlive()) {
+					ms.remove(m);
+					a.hit(m.getDamage());
+					points += 10;
+					if (!a.isAlive()) {
+						aliens.remove(a);
+					}
 				}
 			}
 		}
+
 	}
 
-	private class TAdapter extends KeyAdapter {
-
-		public void keyReleased(KeyEvent e) {
-			craft.keyReleased(e);
-		}
-
-		public void keyPressed(KeyEvent e) {
-			craft.keyPressed(e);
-		}
+	/**
+	 * Gibt die Liste der aktuell auf dem Board aktiven Alien zurück.
+	 * 
+	 * @return
+	 */
+	public ArrayList<Alien> getCurrentAliens() {
+		return aliens;
 	}
 }
