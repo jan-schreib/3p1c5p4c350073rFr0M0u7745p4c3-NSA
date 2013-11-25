@@ -1,12 +1,21 @@
 package de.rType.menu;
 
-
 /**
  * 
  * @author Jo
  * 
  */
 public abstract class MenuListener {
+	
+	public Menu menu;
+
+	public MenuListener() {
+		
+	}
+	
+	public void addToMenu(Menu menu){
+		this.menu = menu;
+	}
 
 	protected static final String START_GAME = "start";
 	protected static final String PAUSE_GAME = "pause";
@@ -16,10 +25,8 @@ public abstract class MenuListener {
 		if (command != null && !command.isEmpty()) {
 			if (command == MenuItemKeys.NEW_GAME) {
 				newGame();
-			} else if (command == MenuItemKeys.START) {
-				startGame();
-			} else if (command.equals(MenuItemKeys.PAUSE)) {
-				pauseGame();
+			} else if (command == MenuItemKeys.RESUME) {
+				resumeGame();
 			} else if (command.equals(MenuItemKeys.OPTIONS)) {
 				showOptions();
 			} else if (command.equals(MenuItemKeys.EXIT)) {
@@ -30,9 +37,7 @@ public abstract class MenuListener {
 
 	public abstract void newGame();
 
-	public abstract void startGame();
-
-	public abstract void pauseGame();
+	public abstract void resumeGame();
 
 	public abstract void showOptions();
 
