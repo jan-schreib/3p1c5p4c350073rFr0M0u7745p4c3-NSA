@@ -183,7 +183,7 @@ public class Board extends JPanel implements ActionListener {
 
 				if (r1.intersects(r2)) {
 					ms.remove(m); // m.setVisible(false)
-					a.hit();
+					a.hit(1);
 				}
 			}
 		}
