@@ -1,27 +1,58 @@
 package de.rType.model;
 
+import de.rType.util.MathUtil;
 
-public class Alien extends GameObject{
+/**
+ * Base Enemy Alien
+ * 
+ */
+public class Alien extends GameObject {
 
-	int height;
+	private int startX;
+	private int startY;
+	private static int START_HP = 2;
 
-    public Alien(int x, int y) {
-    	super(x,y,"../resources/alien.png",-2,1);
-    	height = y;
-    }
-    
-    @Override
-    public void move() {
-    	super.move();
-    	
-    	int tempY = (int)(Math.sin(getX()*1/50)*50 +height);
-    	if(tempY < 8) {
-    		tempY = 8; 
-    	}
-    	else if(tempY > 715) {
-    		tempY = 715;
-    	}
-    	System.out.println(tempY);
-    	setY(tempY);
-    }
+	private Pair<Integer, Integer> sinus;
+	private boolean up = true;
+
+	public Alien() {
+		super(0, 0, "../resources/alien_small.png", -1, START_HP);
+	}
+
+	public Alien(int x, int y) {
+		super(x, y, "../resources/alien_small.png", -1, START_HP);
+		sinus = MathUtil.getMinMaxSinus(x, 0, 128, y);
+	}
+
+	public void setPosition(int x, int y) {
+		super.setPosition(x, y);
+		sinus = MathUtil.getMinMaxSinus(x, 0, 128, y);
+		startX = x;
+		startY = y;
+	}
+
+	@Override
+	public void move() {
+		super.move();
+		if (up) {
+			if (this.y > sinus.getValueOne()) {
+				this.y--;
+			}
+			if (this.y == sinus.getValueOne()) {
+				up = false;
+			}
+		} else {
+			if (this.y < sinus.getValueTwo()) {
+				this.y++;
+			}
+			if (this.y == sinus.getValueTwo()) {
+				up = true;
+			}
+		}
+	}
+
+	public void reset() {
+		setPosition(startX, startY);
+		setHp(START_HP);
+	}
 }
