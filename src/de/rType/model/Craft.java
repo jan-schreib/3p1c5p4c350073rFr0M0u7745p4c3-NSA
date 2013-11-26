@@ -41,44 +41,36 @@ public class Craft extends GameObject {
 		return missiles;
 	}
 
+	/**
+	 * TODO Heraus fliegen aus dem frame muss verhindert werden
+	 * && !((x + 3) > (res.getValueOne() - hitbox.width))
+	 */
+	/**
+	 * TODO Heraus fliegen aus dem frame muss verhindert werden
+	 * && !((y + 3) > (res.getValueTwo() - hitbox.height))
+	 */
 	public void keyPressed(KeyEvent e) {
 
 		int key = e.getKeyCode();
-		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
-
-		if (key == KeyEvent.VK_SPACE) {
-			fire();
-			return;
-		}
-
-		if (key == KeyEvent.VK_LEFT) {
-			dx = -3;
-		}
-		
-		/**
-		 * TODO Heraus fliegen aus dem frame muss verhindert werden
-		 * && !((x + 3) > (res.getValueOne() - hitbox.width))
-		 */
-		if (key == KeyEvent.VK_RIGHT) {
-			System.out.println("X: " + x);
-			System.out.println(res.getValueOne() - hitbox.width);
-			dx = 3;
-		} else {
-			dx = -3;
-		}
-
-		if (key == KeyEvent.VK_UP) {
-			dy = -3;
-		}
-
-		/**
-		 * TODO Heraus fliegen aus dem frame muss verhindert werden
-		 * && !((y + 3) > (res.getValueTwo() - hitbox.height))
-		 */
-
-		if (key == KeyEvent.VK_DOWN) {
-			dy = 3;
-		}
+		  switch(key){
+	        case KeyEvent.VK_SPACE:
+	        	fire();
+	            break;
+	        case KeyEvent.VK_LEFT:
+	        	dx = -3;
+	            break;
+	        case KeyEvent.VK_RIGHT:
+	        	dx = 3;
+	            break;
+	        case KeyEvent.VK_UP:
+	        	dy = -3;
+	            break;
+	        case KeyEvent.VK_DOWN:
+	        	dy = 3;
+	            break;
+	        default:
+	            break;
+	        }
 	}
 
 	public void fire() {
@@ -87,21 +79,21 @@ public class Craft extends GameObject {
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-
-		if (key == KeyEvent.VK_LEFT) {
-			dx = 0;
-		}
-
-		if (key == KeyEvent.VK_RIGHT) {
-			dx = 0;
-		}
-
-		if (key == KeyEvent.VK_UP) {
-			dy = 0;
-		}
-
-		if (key == KeyEvent.VK_DOWN) {
-			dy = 0;
-		}
+		  switch(key){
+	        case KeyEvent.VK_LEFT:
+	        	dx = 0;
+	            break;
+	        case KeyEvent.VK_RIGHT:
+	        	dx = 0;
+	            break;
+	        case KeyEvent.VK_UP:
+	        	dy = 0;
+	            break;
+	        case KeyEvent.VK_DOWN:
+	        	dy = 0;
+	            break;
+	        default:
+	            break;
+	        }
 	}
 }
