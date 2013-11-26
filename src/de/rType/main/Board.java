@@ -156,7 +156,7 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	public void checkCollisions() {
-
+		//Raumschiff vs Alien.
 		Rectangle r3 = craft.getBounds();
 
 		for (int j = 0; j < aliens.size(); j++) {
@@ -169,21 +169,20 @@ public class Board extends JPanel implements ActionListener {
 				ingame = false;
 			}
 		}
-
+		//Missile vs. Alien
 		ArrayList<Missile> ms = craft.getMissiles();
 
 		for (int i = 0; i < ms.size(); i++) {
 			Missile m = ms.get(i);
-
 			Rectangle r1 = m.getHitbox();
 
 			for (int j = 0; j < aliens.size(); j++) {
 				Alien a = (Alien) aliens.get(j);
 				Rectangle r2 = a.getHitbox();
-
+				
 				if (r1.intersects(r2)) {
 					ms.remove(m); // m.setVisible(false)
-					a.hit(1);
+					a.hit(m.getDamage());
 				}
 			}
 		}

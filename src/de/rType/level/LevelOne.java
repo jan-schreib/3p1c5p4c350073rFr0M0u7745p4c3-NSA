@@ -20,16 +20,13 @@ public class LevelOne extends Level {
 
 	@Override
 	protected void performLevel() {
-		long time = 400;
+		long time = 600;
 
 		for (int i = 0; i < 100; i++) {
 			long t = time * i;
-			if (i > 10) {
-				t += (300 * i);
-			}
 			Alien a = AlienRepository.getInstance().get(Alien.class);
 			Pair<Integer, Integer> resolution = Enviroment.getEnviroment().getResolution();
-			a.setPosition(resolution.getValueOne(), resolution.getValueTwo() - 100);
+			a.setPosition(resolution.getValueOne(), resolution.getValueTwo() / 2 - 100);
 			this.addAlien(t, a);
 		}
 	}

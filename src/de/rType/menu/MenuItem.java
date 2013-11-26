@@ -1,19 +1,15 @@
 package de.rType.menu;
 
+/**
+ * 
+ * @author Jo
+ * 
+ */
 public class MenuItem {
 
 	private String text;
 	private String event;
 	private boolean visible = true;
-
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-
 	private boolean selected = false;
 
 	public MenuItem(String text, String event, boolean visible) {
@@ -24,6 +20,14 @@ public class MenuItem {
 
 	public MenuItem(String text, String event) {
 		this(text, event, true);
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	public String getText() {

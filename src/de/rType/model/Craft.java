@@ -1,130 +1,106 @@
 package de.rType.model;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import javax.swing.ImageIcon;
+import de.rType.main.Enviroment;
 
-public class Craft {
+/**
+ * 
+ * @author Jo
+ * 
+ */
+public class Craft extends GameObject {
 
-    private String craft = "../resources/craft.png";
+	private static final String DEFAULT_CRAFT = "../resources/craft.png";
 
-    private int dx;
-    private int dy;
-    private int x;
-    private int y;
-    private int width;
-    private int height;
-    private boolean visible;
-    private Image image;
-    private ArrayList<Missile> missiles;
+	private int dx;
+	private int dy;
+	private ArrayList<Missile> missiles;
 
+	public Craft() {
+		super(40, 60, DEFAULT_CRAFT, 1, 100);
+		missiles = new ArrayList<Missile>();
+	}
 
-    public Craft() {
-        ImageIcon ii = new ImageIcon(this.getClass().getResource(craft));
-        image = ii.getImage();
-        width = image.getWidth(null);
-        height = image.getHeight(null);
-        missiles = new ArrayList<Missile>();
-        visible = true;
-        x = 40;
-        y = 60;
-    }
+	public void move() {
 
+		x += dx;
+		y += dy;
 
-    public void move() {
+		if (x < 1) {
+			x = 1;
+		}
 
-        x += dx;
-        y += dy;
+		if (y < 1) {
+			y = 1;
+		}
+	}
 
-        if (x < 1) {
-            x = 1;
-        }
+	public ArrayList<Missile> getMissiles() {
+		return missiles;
+	}
 
-        if (y < 1) {
-            y = 1;
-        }
-    }
+	public void keyPressed(KeyEvent e) {
 
-    public int getX() {
-        return x;
-    }
+		int key = e.getKeyCode();
+		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
 
-    public int getY() {
-        return y;
-    }
+		if (key == KeyEvent.VK_SPACE) {
+			fire();
+		}
 
-    public Image getImage() {
-        return image;
-    }
+		if (key == KeyEvent.VK_LEFT) {
+			dx = -3;
+		}
+		
+		/**
+		 * TODO Heraus fliegen aus dem frame muss verhindert werden
+		 * && !((x + 3) > (res.getValueOne() - hitbox.width))
+		 */
+		if (key == KeyEvent.VK_RIGHT) {
+			System.out.println("X: " + x);
+			System.out.println(res.getValueOne() - hitbox.width);
+			dx = 3;
+		} else {
+			dx = -3;
+		}
 
-    public ArrayList<Missile> getMissiles() {
-        return missiles;
-    }
+		if (key == KeyEvent.VK_UP) {
+			dy = -3;
+		}
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
+		/**
+		 * TODO Heraus fliegen aus dem frame muss verhindert werden
+		 * && !((y + 3) > (res.getValueTwo() - hitbox.height))
+		 */
 
-    public boolean isVisible() {
-        return visible;
-    }
+		if (key == KeyEvent.VK_DOWN) {
+			dy = 3;
+		}
+	}
 
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
-    }
+	public void fire() {
+		missiles.add(new Missile(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2) - 5));
+	}
 
-    public void keyPressed(KeyEvent e) {
+	public void keyReleased(KeyEvent e) {
+		int key = e.getKeyCode();
 
-        int key = e.getKeyCode();
+		if (key == KeyEvent.VK_LEFT) {
+			dx = 0;
+		}
 
-        if (key == KeyEvent.VK_SPACE) {
-            fire();
-        }
+		if (key == KeyEvent.VK_RIGHT) {
+			dx = 0;
+		}
 
-        if (key == KeyEvent.VK_LEFT) {
-            dx = -3;
-        }
+		if (key == KeyEvent.VK_UP) {
+			dy = 0;
+		}
 
-        if (key == KeyEvent.VK_RIGHT) {
-            dx = 3;
-        }
-
-        if (key == KeyEvent.VK_UP) {
-            dy = -3;
-        }
-
-        if (key == KeyEvent.VK_DOWN) {
-            dy = 3;
-        }
-    }
-
-    public void fire() {
-        //missiles.add(new Missile(x + width-20, y + height/2 -30));
-        //missiles.add(new Missile(x + width-20, y + height/2 +20));
-    	missiles.add(new Missile(x + width-20, y + height/2 -30));
-        missiles.add(new Missile(x + width-20, y + height/2 +20));
-    }
-
-    public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-
-        if (key == KeyEvent.VK_LEFT) {
-            dx = 0;
-        }
-
-        if (key == KeyEvent.VK_RIGHT) {
-            dx = 0;
-        }
-
-        if (key == KeyEvent.VK_UP) {
-            dy = 0;
-        }
-
-        if (key == KeyEvent.VK_DOWN) {
-            dy = 0;
-        }
-    }
+		if (key == KeyEvent.VK_DOWN) {
+			dy = 0;
+		}
+	}
 }
