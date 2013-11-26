@@ -131,9 +131,9 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
-
+	
 	public void actionPerformed(ActionEvent e) {
-
+		//Missile handling
 		ArrayList<Missile> ms = craft.getMissiles();
 
 		for (int i = 0; i < ms.size(); i++) {
@@ -143,7 +143,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			else
 				ms.remove(i);
 		}
-
+		//Alien handling
 		for (int i = 0; i < aliens.size(); i++) {
 			Alien a = (Alien) aliens.get(i);
 			if (a.isAlive()) {

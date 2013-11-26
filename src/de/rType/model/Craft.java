@@ -17,6 +17,11 @@ public class Craft extends GameObject {
 
 	private int dx;
 	private int dy;
+	
+	private static int X_MAX = 730; 
+	private static int Y_MAX = 500;
+	private static int X_MIN = 0;
+	private static int Y_MIN = 0;
 	private ArrayList<Missile> missiles;
 
 	public Craft() {
@@ -25,9 +30,19 @@ public class Craft extends GameObject {
 	}
 
 	public void move() {
-
-		x += dx;
-		y += dy;
+		
+		if(x < X_MAX && x > X_MIN) {
+			x += dx;
+		}
+		else {
+			x--;
+		}
+		if(y < Y_MAX && y > Y_MIN) {
+			y += dy;
+		}
+		else {
+			y--;
+		}
 
 		if (x < 1) {
 			x = 1;
@@ -55,6 +70,8 @@ public class Craft extends GameObject {
 		int key = e.getKeyCode();
 		  switch(key){
 	        case KeyEvent.VK_SPACE:
+	        	System.out.println(this.getX());
+	        	System.out.println(this.getY());
 	        	fire();
 	            break;
 	        case KeyEvent.VK_LEFT:

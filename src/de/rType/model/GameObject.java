@@ -13,7 +13,8 @@ abstract public class GameObject {
 	private Image image;
 	private int speed;
 	protected int hp; // Healthpoints
-
+	
+	
 	public GameObject(int x, int y, String image, int speed, int hp) {
 		this.x = x;
 		this.y = y;

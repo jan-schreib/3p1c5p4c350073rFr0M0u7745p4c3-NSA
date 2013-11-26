@@ -10,7 +10,7 @@ public class Alien extends GameObject {
 
 	private int startX;
 	private int startY;
-	private static int START_HP = 2;
+	private static int START_HP = 0;
 
 	private Pair<Integer, Integer> sinus;
 	private boolean up = true;
