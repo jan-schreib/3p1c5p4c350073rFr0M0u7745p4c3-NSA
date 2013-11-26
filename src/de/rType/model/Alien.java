@@ -55,12 +55,4 @@ public class Alien extends GameObject {
 		setPosition(startX, startY);
 		setHp(startHP);
 	}
-
-	public void hit(int damage) {
-		this.hp = this.hp - damage;
-	}
-
-	public void criticalHit() {
-		this.hp = this.hp - 20;
-	}
 }

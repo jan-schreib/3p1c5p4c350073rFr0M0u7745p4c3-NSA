@@ -21,8 +21,7 @@ abstract public class GameObject {
 		this.image = i.getImage();
 		this.speed = speed;
 		this.hp = hp;
-		this.hitbox = new Rectangle(x, y, this.image.getWidth(null),
-				this.image.getHeight(null));
+		this.hitbox = new Rectangle(x, y, this.image.getWidth(null), this.image.getHeight(null));
 	}
 
 	public int getX() {
@@ -93,5 +92,13 @@ abstract public class GameObject {
 
 	public boolean isAlive() {
 		return (hp > 0);
+	}
+
+	public void hit(int damage) {
+		this.hp = this.hp - damage;
+	}
+
+	public void criticalHit() {
+		this.hp = -1;
 	}
 }

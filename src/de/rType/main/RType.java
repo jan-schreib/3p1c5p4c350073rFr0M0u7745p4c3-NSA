@@ -26,6 +26,7 @@ public class RType extends JFrame implements CollectionGame {
 		setSize(env.getResolution().getValueOne(), env.getResolution().getValueTwo());
 
 		MenuListener listener = new MenuListener() {
+
 			public void newGame() {
 				if (gameBoard != null) {
 					gameBoard.setVisible(false);
@@ -49,6 +50,7 @@ public class RType extends JFrame implements CollectionGame {
 				if (gameBoard != null) {
 					gameBoard.pause();
 					menu.setVisible(true);
+					menu.getResumeItem().setVisible(true);
 					menu.grabFocus();
 				}
 			}
@@ -65,8 +67,9 @@ public class RType extends JFrame implements CollectionGame {
 			}
 
 			@Override
-			public void startGame() {
+			public void resumeGame() {
 				if (gameBoard != null) {
+					menu.getResumeItem().setVisible(false);
 					menu.setVisible(false);
 					gameBoard.grabFocus();
 					gameBoard.start();

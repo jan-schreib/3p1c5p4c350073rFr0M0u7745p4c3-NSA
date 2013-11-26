@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import de.rType.level.Level;
 import de.rType.level.LevelOne;
 import de.rType.model.Alien;
 import de.rType.model.Craft;
 import de.rType.model.Missile;
+import de.rType.model.Pair;
 
 /**
  * Main Game Class
@@ -33,6 +35,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 	private Timer timer;
 	private Craft craft;
+	private Level currentLevel;
 	private ArrayList<Alien> aliens = new ArrayList<Alien>();
 
 	private boolean ingame;
@@ -60,27 +63,32 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 		setFocusable(true);
 		setBackground(Color.BLACK);
 		setDoubleBuffered(true);
-		
+
 		ingame = true;
 		craft = new Craft();
 		timer = new Timer(5, this);
-		new LevelOne(this);
+
+		// Temporary add level here
+		currentLevel = new LevelOne(this);
 	}
 
 	public abstract void escapePressed();
 
 	public void start() {
+		currentLevel.start();
 		timer.start();
 	}
 
 	public void pause() {
+		currentLevel.pause();
 		timer.stop();
 	}
 
 	public void addNotify() {
 		super.addNotify();
-		B_WIDTH = getWidth();
-		B_HEIGHT = getHeight();
+		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
+		B_WIDTH = res.getValueOne();
+		B_HEIGHT = res.getValueTwo();
 	}
 
 	public void paint(Graphics g) {
@@ -89,7 +97,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 			Graphics2D g2d = (Graphics2D) g;
 
-			if (craft.isVisible()) {
+			if (craft.isAlive()) {
 				g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(), this);
 			}
 			ArrayList<Missile> ms = craft.getMissiles();
@@ -154,7 +162,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 	public void checkCollisions() {
 
-		Rectangle hitboxCraft = craft.getBounds();
+		Rectangle hitboxCraft = craft.getHitbox();
 		ArrayList<Missile> ms = craft.getMissiles();
 
 		for (int j = 0; j < aliens.size(); j++) {
@@ -162,7 +170,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			Rectangle hitboxAlien = a.getHitbox();
 
 			if (hitboxCraft.intersects(hitboxAlien) && a.isAlive()) {
-				craft.setVisible(false);
+				craft.criticalHit();
 				a.criticalHit();
 				aliens.remove(a);
 				ingame = false;

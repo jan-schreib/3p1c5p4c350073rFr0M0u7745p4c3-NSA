@@ -30,9 +30,15 @@ public class Menu extends JPanel {
 
 	private List<MenuItem> items;
 	private List<MenuItem> visibleList;
+	private MenuItem resumeItem;
+
+	public MenuItem getResumeItem() {
+		return resumeItem;
+	}
 
 	public Menu(final MenuListener listener) {
 		initMenuItems();
+		listener.addToMenu(this);
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				int key = e.getKeyCode();
@@ -65,7 +71,7 @@ public class Menu extends JPanel {
 						} else if (key == KeyEvent.VK_ENTER) {
 							listener.performMenuItem(item);
 						} else if (key == KeyEvent.VK_ESCAPE) {
-							listener.startGame();
+							listener.resumeGame();
 						}
 					}
 				}
@@ -76,10 +82,10 @@ public class Menu extends JPanel {
 	}
 
 	public void initMenuItems() {
-
-		items = Arrays.asList(new MenuItem("New Game", MenuItemKeys.NEW_GAME), new MenuItem("Pause", MenuItemKeys.PAUSE, false), new MenuItem(
-				"Weiter", MenuItemKeys.START, false), new MenuItem("Options", MenuItemKeys.OPTIONS), new MenuItem("Exit", MenuItemKeys.EXIT));
-		items.get(0).setSelected(true);
+		this.resumeItem = new MenuItem("Weiter", MenuItemKeys.RESUME, false);
+		items = Arrays.asList(resumeItem, new MenuItem("New Game", MenuItemKeys.NEW_GAME), new MenuItem("Options", MenuItemKeys.OPTIONS),
+				new MenuItem("Exit", MenuItemKeys.EXIT));
+		items.get(1).setSelected(true);
 	}
 
 	public void paint(Graphics g) {
