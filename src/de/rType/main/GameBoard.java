@@ -22,6 +22,7 @@ import de.rType.model.Alien;
 import de.rType.model.Craft;
 import de.rType.model.Missile;
 import de.rType.model.Pair;
+import de.rType.util.Sound;
 
 /**
  * Main Game Class
@@ -188,6 +189,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 					points += 10;
 					if (!a.isAlive()) {
 						aliens.remove(a);
+						Sound.explosion.play();
 					}
 				}
 			}
