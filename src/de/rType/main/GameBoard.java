@@ -164,18 +164,17 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 		Rectangle hitboxCraft = craft.getHitbox();
 		ArrayList<Missile> ms = craft.getMissiles();
-
+		//Player collides with Alien.
 		for (int j = 0; j < aliens.size(); j++) {
 			Alien a = aliens.get(j);
 			Rectangle hitboxAlien = a.getHitbox();
-
 			if (hitboxCraft.intersects(hitboxAlien) && a.isAlive()) {
 				craft.criticalHit();
 				a.criticalHit();
 				aliens.remove(a);
 				ingame = false;
 			}
-
+			//Missile vs. Alien.
 			for (int i = 0; i < ms.size(); i++) {
 				Missile m = ms.get(i);
 
@@ -183,7 +182,9 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 				if (hitBoxMissile.intersects(hitboxAlien) && a.isAlive()) {
 					ms.remove(m);
+					System.out.println("Vorher: " + a.getHp());
 					a.hit(m.getDamage());
+					System.out.println("Nacher: " + a.getHp());
 					points += 10;
 					if (!a.isAlive()) {
 						aliens.remove(a);

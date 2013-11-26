@@ -10,17 +10,17 @@ public class Alien extends GameObject {
 
 	private int startX;
 	private int startY;
-	private int startHP = 2;
+	private static int START_HP = 2;
 
 	private Pair<Integer, Integer> sinus;
 	private boolean up = true;
 
 	public Alien() {
-		super(0, 0, "../resources/alien_small.png", -1, 1);
+		super(0, 0, "../resources/alien_small.png", -1, START_HP);
 	}
 
 	public Alien(int x, int y) {
-		super(x, y, "../resources/alien_small.png", -1, 1);
+		super(x, y, "../resources/alien_small.png", -1, START_HP);
 		sinus = MathUtil.getMinMaxSinus(x, 0, 128, y);
 	}
 
@@ -53,6 +53,6 @@ public class Alien extends GameObject {
 
 	public void reset() {
 		setPosition(startX, startY);
-		setHp(startHP);
+		setHp(START_HP);
 	}
 }

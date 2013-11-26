@@ -48,6 +48,7 @@ public class Craft extends GameObject {
 
 		if (key == KeyEvent.VK_SPACE) {
 			fire();
+			return;
 		}
 
 		if (key == KeyEvent.VK_LEFT) {
