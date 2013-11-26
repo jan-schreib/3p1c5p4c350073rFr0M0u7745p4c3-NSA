@@ -182,9 +182,9 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 				if (hitBoxMissile.intersects(hitboxAlien) && a.isAlive()) {
 					ms.remove(m);
-					System.out.println("Vorher: " + a.getHp());
+					
 					a.hit(m.getDamage());
-					System.out.println("Nacher: " + a.getHp());
+					
 					points += 10;
 					if (!a.isAlive()) {
 						aliens.remove(a);
