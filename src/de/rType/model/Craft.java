@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import de.rType.main.Enviroment;
+import de.rType.util.Sound;
 
 /**
  * 
@@ -75,6 +76,7 @@ public class Craft extends GameObject {
 
 	public void fire() {
 		missiles.add(new Missile(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2) - 5));
+		Sound.fire.play();
 	}
 
 	public void keyReleased(KeyEvent e) {
