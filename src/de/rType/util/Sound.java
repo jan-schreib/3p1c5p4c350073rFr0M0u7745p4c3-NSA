@@ -15,7 +15,7 @@ import de.rType.main.RType;
 
 public class Sound {
 
-	//Hier gewünschte soundzzz vars. erstellen
+	//Hier gewuenschte soundzzz vars. erstellen
 	public static final Sound fire = new Sound("../resources/laser2.wav");
 	public static final Sound explosion = new Sound("../resources/explo2.wav");
 	

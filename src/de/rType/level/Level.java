@@ -89,7 +89,7 @@ public abstract class Level {
 	}
 
 	/**
-	 * Startet das Level bzw. lässt es weiterlaufen.
+	 * Startet das Level bzw. laesst es weiterlaufen.
 	 * 
 	 */
 	public void start() {
