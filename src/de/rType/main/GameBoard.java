@@ -198,7 +198,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	}
 
 	/**
-	 * Gibt die Liste der aktuell auf dem Board aktiven Alien zurück.
+	 * Gibt die Liste der aktuell auf dem Board aktiven Alien zurueck.
 	 * 
 	 * @return
 	 */
