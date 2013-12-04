@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
+import de.rType.main.Enviroment;
+
 abstract public class GameObject {
 
 	protected int x;
@@ -13,7 +15,7 @@ abstract public class GameObject {
 	private Image image;
 	private int speed;
 	protected int hp; // Healthpoints
-	
+	protected Pair<Integer, Integer> resolution =  Enviroment.getEnviroment().getResolution();	
 	
 	public GameObject(int x, int y, String image, int speed, int hp) {
 		this.x = x;
