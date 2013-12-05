@@ -98,12 +98,14 @@ public abstract class Level {
 	 */
 	public void start() {
 		this.levelTimer = new Timer();
-		if (levelStartTime == 0) {
-			this.levelStartTime = GregorianCalendar.getInstance().getTimeInMillis();
-		}
+		this.levelStartTime = GregorianCalendar.getInstance().getTimeInMillis();
 		for (LevelTask t : levelTasks) {
 			if (!t.isDone()) {
-				levelTimer.schedule(t.getExecutionTask(), t.getTime() - levelTime);
+				long delay = t.getTime() - levelTime;
+				if (delay < 0) {
+					delay = 0;
+				}
+				levelTimer.schedule(t.getExecutionTask(), delay);
 			}
 		}
 	}
