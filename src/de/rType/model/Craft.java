@@ -1,10 +1,8 @@
 package de.rType.model;
 
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
-import de.rType.main.Enviroment;
 import de.rType.util.Sound;
 
 /**
@@ -14,7 +12,7 @@ import de.rType.util.Sound;
  */
 public class Craft extends GameObject {
 
-	private static final String DEFAULT_CRAFT = "../resources/craft.png";
+	private static final String DEFAULT_CRAFT = "/de/rType/resources/craft.png";
 
 	private int dx;
 	private int dy;
@@ -57,19 +55,15 @@ public class Craft extends GameObject {
 	public LinkedList<Missile> getMissiles() {
 		return missiles;
 	}
-
-	/**
-	 * TODO Heraus fliegen aus dem frame muss verhindert werden
-	 * && !((x + 3) > (res.getValueOne() - hitbox.width))
-	 */
-	/**
-	 * TODO Heraus fliegen aus dem frame muss verhindert werden
-	 * && !((y + 3) > (res.getValueTwo() - hitbox.height))
-	 */
+	
 	public void keyPressed(KeyEvent e) {
 
 		int key = e.getKeyCode();
 		  switch(key){
+	        case KeyEvent.VK_SPACE:
+	        	fire();
+	            break;
+
 	        case KeyEvent.VK_LEFT:
 	        	dx = -3;
 	            break;
@@ -84,21 +78,7 @@ public class Craft extends GameObject {
 	            break;
 	        default:
 	            break;
-	        }	 
-	}
-	
-	public void keyTyped(KeyEvent e) {
-		int key = e.getKeyCode();
-		  switch(key){
-		  case KeyEvent.VK_SPACE:
-			  System.out.println("PRESS");
-			  fire();
-			  break;
-		  default:
-			  break;
 		  }
-		   		
-
 	}
 
 	public void fire() {

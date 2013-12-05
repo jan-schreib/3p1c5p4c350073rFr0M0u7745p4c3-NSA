@@ -1,16 +1,14 @@
-package de.collectionGame;
+package global;
+
 public class Score {
-    // Attributes
     private String playerName;
     private int score;
 
-    // Constructors
     public Score(String playerName, int score) {
         setPlayerName(playerName);
         setScore(score);
     }
 
-    // Methods
     public String getPlayerName() {
         return this.playerName;
     }
@@ -25,5 +23,10 @@ public class Score {
 
     private void setScore(int score) {
         this.score = score;
+    }
+    
+    @Override
+    public String toString(){
+        return playerName + ";" + score;
     }
 }

@@ -54,11 +54,11 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 			
-			public void keyTyped(KeyEvent e) {
-				if (e.getKeyCode() != KeyEvent.VK_ESCAPE) {
-					craft.keyTyped(e);
-				}
-			}
+//			public void keyTyped(KeyEvent e) {
+//				if (e.getKeyCode() != KeyEvent.VK_ESCAPE) {
+//					craft.keyTyped(e);
+//				}
+//			}
 
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {

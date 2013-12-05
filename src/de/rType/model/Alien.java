@@ -13,11 +13,11 @@ public class Alien extends GameObject {
 	
 
 	public Alien() {
-		super(0, 0, "../resources/alien.png", -1, START_HP);
+		super(0, 0, "/de/rType/resources/alien.png", -1, START_HP);
 	}
 
 	public Alien(int x, int y) {
-		super(x, y, "../resources/alien.png", -1, START_HP);
+		super(x, y, "/de/rType/resources/alien.png", -1, START_HP);
 	}
 
 	public void setPosition(int x, int y) {

@@ -1,6 +1,7 @@
 package de.rType.level;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -19,6 +20,8 @@ public abstract class Level {
 	private GameBoard gameBoard;
 	private Timer levelTimer;
 	private List<LevelTask> levelTasks;
+	private long levelStartTime = 0;
+	private long levelTime = 0;
 
 	private class LevelTask extends TimerTask {
 
@@ -86,6 +89,7 @@ public abstract class Level {
 	public void pause() {
 		this.levelTimer.cancel();
 		this.levelTimer.purge();
+		this.levelTime += (GregorianCalendar.getInstance().getTimeInMillis() - this.levelStartTime);
 	}
 
 	/**
@@ -94,9 +98,14 @@ public abstract class Level {
 	 */
 	public void start() {
 		this.levelTimer = new Timer();
+		this.levelStartTime = GregorianCalendar.getInstance().getTimeInMillis();
 		for (LevelTask t : levelTasks) {
 			if (!t.isDone()) {
-				levelTimer.schedule(t.getExecutionTask(), t.getTime());
+				long delay = t.getTime() - levelTime;
+				if (delay < 0) {
+					delay = 0;
+				}
+				levelTimer.schedule(t.getExecutionTask(), delay);
 			}
 		}
 	}

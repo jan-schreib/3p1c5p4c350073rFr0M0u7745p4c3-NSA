@@ -1,11 +1,16 @@
 package de.rType.main;
 
+import global.CollectionGame;
+import global.GlobalSettings;
+import global.MainMenuInterface;
+import global.Score;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-import de.collectionGame.CollectionGame;
-import de.collectionGame.GlobalSettings;
-import de.collectionGame.MainMenuInterface;
-import de.collectionGame.Score;
 import de.rType.menu.Menu;
 import de.rType.menu.MenuListener;
 
@@ -17,13 +22,15 @@ import de.rType.menu.MenuListener;
 public class RType extends JFrame implements CollectionGame {
 
 	private static final long serialVersionUID = 1L;
-
+	private static final String GAME_PICS_PATH = "/de/rType/resources/gamepics/";
+	private MainMenuInterface collectionMenu;
 	private GameBoard gameBoard;
 	private Menu menu;
 
 	public void initialize() {
 		Enviroment env = Enviroment.getEnviroment();
-		setSize(env.getResolution().getValueOne(), env.getResolution().getValueTwo());
+		setSize(env.getResolution().getValueOne(), env.getResolution()
+				.getValueTwo());
 
 		MenuListener listener = new MenuListener() {
 
@@ -57,8 +64,7 @@ public class RType extends JFrame implements CollectionGame {
 
 			@Override
 			public void exitGame() {
-				// TODO Return to MainMenu
-				System.exit(0);
+				returnToMainMenu();
 			}
 
 			@Override
@@ -85,25 +91,52 @@ public class RType extends JFrame implements CollectionGame {
 	}
 
 	public static void main(String[] args) {
-		new RType().runGame(new GlobalSettings(false, false, new int[] { 800, 600 }), null);
+		new RType().runGame(new GlobalSettings(), null);
 	}
 
 	@Override
-	public void runGame(GlobalSettings globalSettings, MainMenuInterface mainMenuRef) {
+	public void runGame(GlobalSettings globalSettings,
+			MainMenuInterface mainMenuRef) {
 		Enviroment.getEnviroment().setGlobalSettings(globalSettings);
+		collectionMenu = mainMenuRef;
 		initialize();
 		setVisible(true);
 	}
 
 	@Override
 	public Score[] getHighscore() {
-		// TODO Auto-generated method stub
-		return null;
+		// Temporary random
+		// TODO
+		Score[] highscores = new Score[3];
+		highscores[0] = new Score("Peter Pan", 10000000);
+		highscores[0] = new Score("Pipi Langstrumpf", 10000001);
+		highscores[0] = new Score("Raeuber Hotzenplotz", 10000002);
+		return highscores;
 	}
 
 	@Override
-	public Object getGamePics() {
-		// TODO Auto-generated method stub
+	public BufferedImage[] getGamePics() {
+		try {
+
+			BufferedImage[] images = new BufferedImage[3];
+			images[0] = ImageIO.read(this.getClass().getResource(GAME_PICS_PATH + "eins.png"));
+			images[1] = ImageIO.read(this.getClass().getResource(GAME_PICS_PATH + "zwei.png"));
+			images[2] = ImageIO.read(this.getClass().getResource(GAME_PICS_PATH + "drei.png"));
+			
+			return images;
+		} catch (IOException e) {
+			e.printStackTrace();
+			// Error reading files TODO Exceptionhandling?
+		}
 		return null;
+	}
+
+	private void returnToMainMenu() {
+		// Clear Frame and Instances and call the collectionMenu to show
+		this.setVisible(false);
+		this.removeAll();
+		this.gameBoard = null;
+		this.menu = null;
+		this.collectionMenu.returnToMainMenu();
 	}
 }
