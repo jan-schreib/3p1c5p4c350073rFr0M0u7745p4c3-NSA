@@ -110,7 +110,7 @@ public class RType extends JFrame implements CollectionGame {
 		Score[] highscores = new Score[3];
 		highscores[0] = new Score("Peter Pan", 10000000);
 		highscores[0] = new Score("Pipi Langstrumpf", 10000001);
-		highscores[0] = new Score("Räuber Hotzenplotz", 10000002);
+		highscores[0] = new Score("Raeuber Hotzenplotz", 10000002);
 		return highscores;
 	}
 
