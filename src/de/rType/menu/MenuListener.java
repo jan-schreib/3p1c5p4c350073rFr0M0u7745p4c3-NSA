@@ -23,9 +23,9 @@ public abstract class MenuListener {
 	public void performMenuItem(MenuItem item) {
 		String command = item.getEvent();
 		if (command != null && !command.isEmpty()) {
-			if (command == MenuItemKeys.NEW_GAME) {
+			if (command.equals(MenuItemKeys.NEW_GAME)) {
 				newGame();
-			} else if (command == MenuItemKeys.RESUME) {
+			} else if (command.equals(MenuItemKeys.RESUME)) {
 				resumeGame();
 			} else if (command.equals(MenuItemKeys.OPTIONS)) {
 				showOptions();
