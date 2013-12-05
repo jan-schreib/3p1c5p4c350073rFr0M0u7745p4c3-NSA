@@ -1,6 +1,6 @@
 package de.rType.main;
 
-import de.collectionGame.GlobalSettings;
+import global.GlobalSettings;
 import de.rType.model.Pair;
 
 /**
