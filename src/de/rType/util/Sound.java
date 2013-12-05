@@ -40,4 +40,7 @@ public class Sound {
 			e.printStackTrace();
 		}
 	}
+//	public void play() {
+//					clip.play();
+//	}
 }

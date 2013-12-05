@@ -2,6 +2,7 @@ package de.rType.model;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import de.rType.main.Enviroment;
 import de.rType.util.Sound;
@@ -22,11 +23,11 @@ public class Craft extends GameObject {
 	private static int Y_MAX = 500;
 	private static int X_MIN = 0;
 	private static int Y_MIN = 0;
-	private ArrayList<Missile> missiles;
+	private LinkedList<Missile> missiles;
 
 	public Craft() {
 		super(40, 60, DEFAULT_CRAFT, 1, 100);
-		missiles = new ArrayList<Missile>();
+		missiles = new LinkedList<Missile>();
 	}
 
 	public void move() {
@@ -53,7 +54,7 @@ public class Craft extends GameObject {
 		}
 	}
 
-	public ArrayList<Missile> getMissiles() {
+	public LinkedList<Missile> getMissiles() {
 		return missiles;
 	}
 
@@ -69,11 +70,6 @@ public class Craft extends GameObject {
 
 		int key = e.getKeyCode();
 		  switch(key){
-	        case KeyEvent.VK_SPACE:
-	        	System.out.println(this.getX());
-	        	System.out.println(this.getY());
-	        	fire();
-	            break;
 	        case KeyEvent.VK_LEFT:
 	        	dx = -3;
 	            break;
@@ -88,7 +84,21 @@ public class Craft extends GameObject {
 	            break;
 	        default:
 	            break;
-	        }
+	        }	 
+	}
+	
+	public void keyTyped(KeyEvent e) {
+		int key = e.getKeyCode();
+		  switch(key){
+		  case KeyEvent.VK_SPACE:
+			  System.out.println("PRESS");
+			  fire();
+			  break;
+		  default:
+			  break;
+		  }
+		   		
+
 	}
 
 	public void fire() {

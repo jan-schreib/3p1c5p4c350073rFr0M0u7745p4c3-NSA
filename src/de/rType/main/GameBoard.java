@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -50,6 +51,12 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() != KeyEvent.VK_ESCAPE) {
 					craft.keyReleased(e);
+				}
+			}
+			
+			public void keyTyped(KeyEvent e) {
+				if (e.getKeyCode() != KeyEvent.VK_ESCAPE) {
+					craft.keyTyped(e);
 				}
 			}
 
@@ -101,7 +108,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			if (craft.isAlive()) {
 				g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(), this);
 			}
-			ArrayList<Missile> ms = craft.getMissiles();
+			LinkedList<Missile> ms = craft.getMissiles();
 
 			for (int i = 0; i < ms.size(); i++) {
 				Missile m = (Missile) ms.get(i);
@@ -134,7 +141,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		//Missile handling
-		ArrayList<Missile> ms = craft.getMissiles();
+		LinkedList<Missile> ms = craft.getMissiles();
 
 		for (int i = 0; i < ms.size(); i++) {
 			Missile m = ms.get(i);
@@ -164,7 +171,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	public void checkCollisions() {
 
 		Rectangle hitboxCraft = craft.getHitbox();
-		ArrayList<Missile> ms = craft.getMissiles();
+		LinkedList<Missile> ms = craft.getMissiles();
 		//Player collides with Alien.
 		for (int j = 0; j < aliens.size(); j++) {
 			Alien a = aliens.get(j);
