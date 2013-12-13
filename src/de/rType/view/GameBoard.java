@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -39,14 +41,13 @@ import de.rType.util.Sound;
 public abstract class GameBoard extends JPanel implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-
 	private Timer timer;
 	private Craft craft;
 	private Level currentLevel;
 	private ArrayList<Level> levels = new ArrayList<Level>(3);
 	private ArrayList<Alien> aliens = new ArrayList<Alien>();
 	private long levelEndTime = 0;
-
+	Image bg;
 	private boolean ingame;
 	private int B_WIDTH;
 	private int B_HEIGHT;
@@ -71,8 +72,12 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 		});
+		ImageIcon icon = new ImageIcon(this.getClass().getResource("/de/rType/resources/bg.jpg"));
+		bg = icon.getImage();
 		setFocusable(true);
-		setBackground(Color.BLACK);
+		setBackground(Color.GREEN);
+		
+		//setBack
 		setDoubleBuffered(true);
 
 		ingame = true;
@@ -112,9 +117,12 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 	public void paint(Graphics g) {
 		super.paint(g);
+		
 		if (ingame) {
 
 			Graphics2D g2d = (Graphics2D) g;
+			//add the bg graphic!
+			g2d.drawImage(bg, 0, 0, null);
 			currentLevel.drawLevel(g2d);
 			if (craft.isAlive()) {
 				g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(), this);
@@ -132,7 +140,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 					g2d.drawImage(a.getImage(), a.getX(), a.getY(), this);
 				}
 			}
-
+			
 			g2d.setColor(Color.WHITE);
 			g.setFont(GameFonts.SMALL);
 			g2d.drawString("Points: " + points, 5, 15);
