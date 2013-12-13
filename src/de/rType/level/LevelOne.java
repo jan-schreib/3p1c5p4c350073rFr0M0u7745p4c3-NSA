@@ -33,16 +33,9 @@ public class LevelOne extends Level {
 
 		for (int i = 0; i < 5; i++) {
 			long t = time * i;
-<<<<<<< HEAD
-			int randAlien = (int)(Math.random() * 3);
-			System.out.println(randAlien);
-			int randPos = (int)(Math.random()* (resolution.getValueTwo()));
-			Alien a = AlienRepository.getInstance().get(arr[randAlien].getClass());	
-=======
 			int randAlien = (int) (Math.random() * 3);
 			int randPos = (int) (Math.random() * resolution.getValueTwo());
 			Alien a = AlienRepository.getInstance().get(arr[randAlien].getClass());// AlienThree.class);
->>>>>>> branch 'develop' of https://kaatze@github.com/jan-schreib/projekt.git
 			a.setPosition(resolution.getValueOne(), randPos);
 			this.addAlien(t, a);
 		}
