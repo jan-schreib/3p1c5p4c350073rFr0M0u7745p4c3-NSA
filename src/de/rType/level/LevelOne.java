@@ -30,8 +30,9 @@ public class LevelOne extends Level {
 		for (int i = 0; i < 100; i++) {
 			long t = time * i;
 			int randAlien = (int)(Math.random() * 3);
-			int randPos = (int)(Math.random()* resolution.getValueTwo());
-			Alien a = AlienRepository.getInstance().get(arr[randAlien].getClass());//AlienThree.class);			
+			System.out.println(randAlien);
+			int randPos = (int)(Math.random()* (resolution.getValueTwo()));
+			Alien a = AlienRepository.getInstance().get(arr[randAlien].getClass());	
 			a.setPosition(resolution.getValueOne(), randPos);
 			this.addAlien(t, a);
 		}

@@ -22,14 +22,14 @@ public class AlienOne extends Alien {
 			if (this.y > sinus.getValueOne()) {
 				this.y--;
 			}
-			if (this.y == sinus.getValueOne()) {
+			if (this.y <= sinus.getValueOne()) {
 				up = false;
 			}
 		} else {
 			if (this.y < sinus.getValueTwo()) {
 				this.y++;
 			}
-			if (this.y == sinus.getValueTwo()) {
+			if (this.y >= sinus.getValueTwo()) {
 				up = true;
 			}
 		}
@@ -39,11 +39,11 @@ public class AlienOne extends Alien {
 	public void setPosition(int x, int y) {
 		super.setPosition(x, y);
 		sinus = MathUtil.getMinMaxSinus(x, 0, 128, y);
-		if(sinus.getValueOne() < 0) {
-			sinus.setValueOne(5);
+		if(sinus.getValueOne() < 6) {
+			sinus.setValueOne(10);
 		}
-		else if(sinus.getValueTwo() > resolution.getValueTwo()+10) {
-			sinus.setValueTwo(resolution.getValueTwo()-20);
+		if(sinus.getValueTwo() > resolution.getValueTwo()-35) {
+			sinus.setValueTwo(resolution.getValueTwo()-35);
 		}
 	}
 }

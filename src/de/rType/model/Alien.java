@@ -21,6 +21,13 @@ public class Alien extends GameObject {
 	}
 
 	public void setPosition(int x, int y) {
+		
+		if(y <= 15) {
+			y= 15;
+		}
+		else if( y >= resolution.getValueTwo()-40) {
+			y = resolution.getValueTwo()-40;
+		}
 		super.setPosition(x, y);
 		startX = x;
 		startY = y;
