@@ -201,7 +201,6 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 		}
-
 	}
 
 	/**
