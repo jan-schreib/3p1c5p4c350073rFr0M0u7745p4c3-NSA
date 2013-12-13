@@ -1,13 +1,18 @@
 package de.rType.level;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import de.rType.main.GameBoard;
 import de.rType.model.Alien;
+import de.rType.resources.GameFonts;
+import de.rType.view.GameBoard;
 
 /**
  * Base Level class
@@ -22,6 +27,7 @@ public abstract class Level {
 	private List<LevelTask> levelTasks;
 	private long levelStartTime = 0;
 	private long levelTime = 0;
+	private boolean initialized = false;
 
 	private class LevelTask extends TimerTask {
 
@@ -39,7 +45,6 @@ public abstract class Level {
 		@Override
 		public void run() {
 			alienList.add(addAlien);
-			done = true;
 		}
 
 		public LevelTask getExecutionTask() {
@@ -48,13 +53,17 @@ public abstract class Level {
 				@Override
 				public void run() {
 					super.run();
-					parent.done = done;
+					parent.setDone();
 				}
 			};
 		}
 
 		public boolean isDone() {
 			return done;
+		}
+
+		public void setDone() {
+			this.done = true;
 		}
 
 		/**
@@ -67,8 +76,6 @@ public abstract class Level {
 
 	public Level(GameBoard gameBoard) {
 		super();
-		this.levelTasks = new ArrayList<LevelTask>();
-		this.levelTimer = new Timer();
 		this.gameBoard = gameBoard;
 	}
 
@@ -97,6 +104,10 @@ public abstract class Level {
 	 * 
 	 */
 	public void start() {
+		if (!initialized) {
+			initialize();
+
+		}
 		this.levelTimer = new Timer();
 		this.levelStartTime = GregorianCalendar.getInstance().getTimeInMillis();
 		for (LevelTask t : levelTasks) {
@@ -110,6 +121,38 @@ public abstract class Level {
 		}
 	}
 
+	private void initialize() {
+		initialized = true;
+		this.levelTasks = new ArrayList<LevelTask>();
+		performLevel();
+	}
+
+	public boolean isDone() {
+		if (!initialized) {
+			return false;
+		}
+		for (LevelTask t : levelTasks) {
+			if (!t.isDone()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public void drawLevel(Graphics g) {
+		// Ersten 1.5 Sek
+		// TODO LEVEL TIME + TASKS
+		if ((levelStartTime + this.levelTime + 1500) > GregorianCalendar.getInstance().getTimeInMillis()) {
+			Font normal = GameFonts.BIG;
+			FontMetrics metrix = this.gameBoard.getFontMetrics(normal);
+			g.setFont(normal);
+			g.setColor(Color.YELLOW);
+			drawLevelText(g, metrix);
+		}
+	}
+
 	protected abstract void performLevel();
+
+	protected abstract void drawLevelText(Graphics g, FontMetrics metrix);
 
 }
