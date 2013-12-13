@@ -56,11 +56,22 @@ public abstract class HighScorePanel extends JPanel {
 				} else if (keyCode == KeyEvent.VK_BACK_SPACE && currentPlayername.length() > 0) {
 					currentPlayername = currentPlayername.substring(0, currentPlayername.length() - 1);
 				} else if (action.equals(PanelAction.READ_PLAYERNAME)) {
-					currentPlayername += KeyEvent.getKeyText(keyCode);
+					String s = getCharFromKeyEvent(e);
+					if (s != null) {
+						currentPlayername += s;
+					}
 				}
 				repaint();
 			};
 		});
+	}
+
+	private String getCharFromKeyEvent(KeyEvent e) {
+		char c = e.getKeyChar();
+		if (c != KeyEvent.CHAR_UNDEFINED) {
+			return String.valueOf(c);
+		}
+		return null;
 	}
 
 	@Override
