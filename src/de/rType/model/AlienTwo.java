@@ -10,4 +10,5 @@ public class AlienTwo extends Alien {
 	public AlienTwo() {
 		super();
 	}
+	
 }

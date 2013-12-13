@@ -14,6 +14,7 @@ import de.rType.model.Alien;
 import de.rType.resources.GameFonts;
 import de.rType.view.GameBoard;
 
+
 /**
  * Base Level class
  * 
