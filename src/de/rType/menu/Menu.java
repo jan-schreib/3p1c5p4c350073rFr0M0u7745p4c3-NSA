@@ -1,7 +1,6 @@
 package de.rType.menu;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
@@ -14,6 +13,7 @@ import javax.swing.JPanel;
 
 import de.rType.main.Enviroment;
 import de.rType.model.Pair;
+import de.rType.resources.GameFonts;
 
 /**
  * GameMenu
@@ -22,9 +22,6 @@ import de.rType.model.Pair;
  * 
  */
 public class Menu extends JPanel {
-
-	private static final Color DEFAULT_COLOR = Color.BLUE;
-	private static final Color SELECTED_COLOR = Color.WHITE;
 
 	private static final long serialVersionUID = 1L;
 
@@ -83,8 +80,9 @@ public class Menu extends JPanel {
 
 	public void initMenuItems() {
 		this.resumeItem = new MenuItem("Weiter", MenuItemKeys.RESUME, false);
-		items = Arrays.asList(resumeItem, new MenuItem("New Game", MenuItemKeys.NEW_GAME), new MenuItem("Options", MenuItemKeys.OPTIONS),
-				new MenuItem("Exit", MenuItemKeys.EXIT));
+		items = Arrays.asList(resumeItem, new MenuItem("New Game", MenuItemKeys.NEW_GAME), new MenuItem("Highscore",
+				MenuItemKeys.HIGHSCORES), new MenuItem("Options", MenuItemKeys.OPTIONS), new MenuItem("Exit",
+				MenuItemKeys.EXIT));
 		items.get(1).setSelected(true);
 	}
 
@@ -92,9 +90,9 @@ public class Menu extends JPanel {
 		super.paint(g);
 
 		setBackground(Color.BLACK);
-		Font normal = new Font("Helvetica", Font.BOLD, 20);
-		FontMetrics metr = this.getFontMetrics(normal);
-		g.setFont(normal);
+
+		FontMetrics metr = this.getFontMetrics(GameFonts.MEDIUM);
+		g.setFont(GameFonts.MEDIUM);
 
 		this.visibleList = new ArrayList<MenuItem>();
 		for (MenuItem item : items) {
@@ -111,9 +109,9 @@ public class Menu extends JPanel {
 
 	private void drawMenuItem(MenuItem item, Graphics g, FontMetrics metrix, int index, int count) {
 		if (item.isSelected()) {
-			g.setColor(SELECTED_COLOR);
+			g.setColor(GameFonts.SELECTED_COLOR);
 		} else {
-			g.setColor(DEFAULT_COLOR);
+			g.setColor(GameFonts.DEFAULT_COLOR);
 		}
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
 		int y = (res.getValueTwo() / (count + 2)) * (index);
