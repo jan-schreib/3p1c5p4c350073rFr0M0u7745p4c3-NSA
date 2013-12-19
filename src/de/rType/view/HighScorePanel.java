@@ -25,11 +25,12 @@ public abstract class HighScorePanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private enum PanelAction {
-		READ_PLAYERNAME, SHOW_HIGHSCORES
+	public enum PanelAction {
+		READ_PLAYERNAME, SHOW_HIGHSCORES, NO_HIGHSCORE
 	}
 
 	private static final String HEADER_TEXT = "Highscores";
+	private static final String NO_HIGHSCORE = "Leider kein Highscore. Versuch es noch einmal...";
 	private static final String BACK_TEXT = "Zurueck";
 	private static final String GET_PLAYERNAME_TEXT = "Spielername eingeben: ";
 
@@ -40,20 +41,20 @@ public abstract class HighScorePanel extends JPanel {
 	public HighScorePanel() {
 		setDoubleBuffered(true);
 		setFocusable(true);
-
 		addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				int keyCode = e.getKeyCode();
 				if (keyCode == KeyEvent.VK_ENTER) {
-					if (action.equals(PanelAction.SHOW_HIGHSCORES)) {
+					if (action.equals(PanelAction.SHOW_HIGHSCORES) || action.equals(PanelAction.NO_HIGHSCORE)) {
 						onComplete();
-					} else if (!currentPlayername.trim().isEmpty()) {
+					} else if (action.equals(PanelAction.READ_PLAYERNAME) && !currentPlayername.trim().isEmpty()) {
 						int score = currentScore.getScore();
 						currentScore = new Score(currentPlayername, score);
 						HighScores.getInstance().performGameResult(currentScore);
 						showHighscores(currentScore);
 					}
-				} else if (keyCode == KeyEvent.VK_BACK_SPACE && currentPlayername.length() > 0) {
+				} else if (action.equals(PanelAction.READ_PLAYERNAME) && keyCode == KeyEvent.VK_BACK_SPACE
+						&& currentPlayername.length() > 0) {
 					currentPlayername = currentPlayername.substring(0, currentPlayername.length() - 1);
 				} else if (action.equals(PanelAction.READ_PLAYERNAME)) {
 					String s = getCharFromKeyEvent(e);
@@ -78,47 +79,61 @@ public abstract class HighScorePanel extends JPanel {
 	public void paint(Graphics g) {
 		super.paint(g);
 		setBackground(Color.BLACK);
-
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
 		FontMetrics metr = this.getFontMetrics(GameFonts.BIG);
-		g.setFont(GameFonts.BIG);
 		int y = (res.getValueTwo() / (14));
-		g.setColor(GameFonts.SPECIAL_COLOR);
-		g.drawString(HEADER_TEXT, (res.getValueOne() - metr.stringWidth(HEADER_TEXT)) / 2, y);
-		metr = this.getFontMetrics(GameFonts.SMALL);
-		g.setFont(GameFonts.SMALL);
-		if (action.equals(PanelAction.SHOW_HIGHSCORES)) {
-			int idx = 3;
-			int pos = 1;
-			List<Score> scores = HighScores.getInstance().getHighScores();
-			for (Score s : scores) {
-				if (s != null && s.equals(currentScore)) {
-					g.setColor(GameFonts.SPECIAL_COLOR);
-				} else {
-					g.setColor(GameFonts.DEFAULT_COLOR);
-				}
-				String entry = Integer.toString(pos) +" : "+  s.getPlayerName() + " - " + s.getScore();
-				y = (res.getValueTwo() / (16)) * (idx + 1);
-				int x = res.getValueOne()/2-50;
-				g.drawString(entry, x, y);
-				pos++;
-				idx++;
-			}
-			g.setColor(GameFonts.SELECTED_COLOR);
-			metr = this.getFontMetrics(GameFonts.MEDIUM);
-			g.setFont(GameFonts.MEDIUM);
-			y = (res.getValueTwo() / (16)) * (idx + 4);
-			g.drawString(BACK_TEXT, (res.getValueOne() - metr.stringWidth(BACK_TEXT)) / 2, y);
-		} else {
+		if (action.equals(PanelAction.NO_HIGHSCORE)) {
+
 			g.setColor(GameFonts.DEFAULT_COLOR);
 			metr = this.getFontMetrics(GameFonts.MEDIUM);
 			g.setFont(GameFonts.MEDIUM);
-			y = (res.getValueTwo() / (16) * 3);
-			g.drawString(GET_PLAYERNAME_TEXT, (res.getValueOne() - metr.stringWidth(GET_PLAYERNAME_TEXT)) / 2, y);
-			y = (res.getValueTwo() / (16) * 5);
+			y = (res.getValueTwo() / (16) * 4);
+			g.drawString(NO_HIGHSCORE, (res.getValueOne() - metr.stringWidth(NO_HIGHSCORE)) / 2, y);
+
+			y = (res.getValueTwo() / (16)) * 6;
+			g.setColor(GameFonts.SELECTED_COLOR);
+			g.drawString(BACK_TEXT, (res.getValueOne() - metr.stringWidth(BACK_TEXT)) / 2, y);
+		} else {
+
+			y = (res.getValueTwo() / (14));
+			g.setFont(GameFonts.BIG);
 			g.setColor(GameFonts.SPECIAL_COLOR);
-			g.drawString(currentPlayername + "_", (res.getValueOne() - metr.stringWidth(currentPlayername + "_")) / 2,
-					y);
+			g.drawString(HEADER_TEXT, (res.getValueOne() - metr.stringWidth(HEADER_TEXT)) / 2, y);
+			metr = this.getFontMetrics(GameFonts.SMALL);
+			g.setFont(GameFonts.SMALL);
+			if (action.equals(PanelAction.SHOW_HIGHSCORES)) {
+				int idx = 2;
+				int pos = 1;
+				List<Score> scores = HighScores.getInstance().getHighScores();
+				for (Score s : scores) {
+					if (s != null && s.equals(currentScore)) {
+						g.setColor(GameFonts.SPECIAL_COLOR);
+					} else {
+						g.setColor(GameFonts.DEFAULT_COLOR);
+					}
+					String entry = Integer.toString(pos) + " : " + s.getPlayerName() + " - " + s.getScore();
+					y = (res.getValueTwo() / (16)) * (idx + 1);
+					int x = res.getValueOne() / 2 - 50;
+					g.drawString(entry, x, y);
+					pos++;
+					idx++;
+				}
+				g.setColor(GameFonts.SELECTED_COLOR);
+				metr = this.getFontMetrics(GameFonts.MEDIUM);
+				g.setFont(GameFonts.MEDIUM);
+				y = (res.getValueTwo() / (16)) * (idx + 2);
+				g.drawString(BACK_TEXT, (res.getValueOne() - metr.stringWidth(BACK_TEXT)) / 2, y);
+			} else {
+				g.setColor(GameFonts.DEFAULT_COLOR);
+				metr = this.getFontMetrics(GameFonts.MEDIUM);
+				g.setFont(GameFonts.MEDIUM);
+				y = (res.getValueTwo() / (16) * 3);
+				g.drawString(GET_PLAYERNAME_TEXT, (res.getValueOne() - metr.stringWidth(GET_PLAYERNAME_TEXT)) / 2, y);
+				y = (res.getValueTwo() / (16) * 5);
+				g.setColor(GameFonts.SPECIAL_COLOR);
+				g.drawString(currentPlayername + "_",
+						(res.getValueOne() - metr.stringWidth(currentPlayername + "_")) / 2, y);
+			}
 		}
 	}
 
@@ -131,6 +146,13 @@ public abstract class HighScorePanel extends JPanel {
 
 	public void showHighscores() {
 		showHighscores(null);
+	}
+
+	public void showNoHighscore() {
+		action = PanelAction.NO_HIGHSCORE;
+		currentScore = null;
+		currentPlayername = "";
+		repaint();
 	}
 
 	private void showHighscores(Score currentScore) {

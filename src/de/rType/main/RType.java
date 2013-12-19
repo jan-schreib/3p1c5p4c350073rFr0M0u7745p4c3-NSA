@@ -5,21 +5,14 @@ import global.GlobalSettings;
 import global.MainMenuInterface;
 import global.Score;
 
-import java.awt.BorderLayout;
-import java.awt.Image;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-
-
 
 import de.rType.menu.Menu;
 import de.rType.menu.MenuListener;
@@ -64,22 +57,24 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 					@Override
 					public void onGameEnd(int score, boolean complete) {
 						gameBoard.pause();
+						gameBoard.setVisible(false);
+						highScorePanel = new HighScorePanel() {
+
+							private static final long serialVersionUID = 1L;
+
+							@Override
+							public void onComplete() {
+								showMenu(false);
+							}
+						};
 						if (HighScores.getInstance().isHighScore(gameBoard.points)) {
-							gameBoard.setVisible(false);
-							highScorePanel = new HighScorePanel() {
-
-								private static final long serialVersionUID = 1L;
-
-								@Override
-								public void onComplete() {
-									showMenu(gameBoard != null && gameBoard.isInGame());
-								}
-							};
-							getContentPane().add(highScorePanel);
 							highScorePanel.readPlayerName(gameBoard.points);
+							getContentPane().add(highScorePanel);
 							highScorePanel.requestFocusInWindow();
 						} else {
-							showMenu(false);
+							highScorePanel.showNoHighscore();
+							getContentPane().add(highScorePanel);
+							highScorePanel.requestFocusInWindow();
 						}
 					}
 				};
@@ -166,7 +161,7 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 	public Score[] getHighscore() {
 		List<Score> scores = HighScores.getInstance().getHighScores();
 		Score[] s = new Score[scores.size()];
-		for(int i = 0; i< scores.size(); i++){
+		for (int i = 0; i < scores.size(); i++) {
 			s[i] = scores.get(i);
 		}
 		return s;

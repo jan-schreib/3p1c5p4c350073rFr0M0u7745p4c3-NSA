@@ -25,11 +25,10 @@ public class HighScores {
 		}
 		return instance;
 	}
-	
+
 	private static final String SEPARATOR = ";";
 
 	private List<Score> scores = new ArrayList<Score>(10);
-	private int minPoints = 0;
 
 	private HighScores() {
 		Preferences prefs = Preferences.userNodeForPackage(this.getClass());
@@ -39,9 +38,6 @@ public class HighScores {
 				String[] data = score.split(SEPARATOR);
 				if (data.length == 2) {
 					int value = Integer.parseInt(data[1]);
-					if (value < minPoints) {
-						minPoints = value;
-					}
 					scores.add(new Score(data[0], value));
 				}
 			} else {
@@ -107,8 +103,11 @@ public class HighScores {
 						newHighScores.add(scores.get(i));
 					} else if (i == idx) {
 						newHighScores.add(newScore);
-					} else if ((i + 1) < scores.size()) {
-						newHighScores.add(scores.get(i + 1));
+						if (i < scores.size() - 1) {
+							newHighScores.add(scores.get(i));
+						}
+					} else if (i < scores.size() - 1) {
+						newHighScores.add(scores.get(i));
 					}
 				}
 			}
@@ -120,7 +119,12 @@ public class HighScores {
 	}
 
 	public boolean isHighScore(int point) {
-		return point >= minPoints;
+		for (Score s : scores) {
+			if (s.getScore() < point) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override

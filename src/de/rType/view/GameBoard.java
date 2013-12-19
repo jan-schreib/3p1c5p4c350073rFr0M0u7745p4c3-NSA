@@ -20,7 +20,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import de.rType.level.Level;
+import de.rType.level.LevelBase;
 import de.rType.level.LevelOne;
 import de.rType.level.LevelThree;
 import de.rType.level.LevelTwo;
@@ -43,8 +43,8 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	private static final long serialVersionUID = 1L;
 	private Timer timer;
 	private Craft craft;
-	private Level currentLevel;
-	private ArrayList<Level> levels = new ArrayList<Level>(3);
+	private LevelBase currentLevel;
+	private ArrayList<LevelBase> levels = new ArrayList<LevelBase>(3);
 	private ArrayList<Alien> aliens = new ArrayList<Alien>();
 	private long levelEndTime = 0;
 	Image bg;
@@ -76,15 +76,15 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 		bg = icon.getImage();
 		setFocusable(true);
 		setBackground(Color.GREEN);
-		
-		//setBack
+
+		// setBack
 		setDoubleBuffered(true);
 
 		ingame = true;
 		craft = new Craft();
 
 		// add levels
-		Level level = new LevelOne(this);
+		LevelBase level = new LevelOne(this);
 		levels.add(level);
 		levels.add(new LevelTwo(this));
 		levels.add(new LevelThree(this));
@@ -117,11 +117,11 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 	public void paint(Graphics g) {
 		super.paint(g);
-		
+
 		if (ingame) {
 
 			Graphics2D g2d = (Graphics2D) g;
-			//add the bg graphic!
+			// add the bg graphic!
 			g2d.drawImage(bg, 0, 0, null);
 			currentLevel.drawLevel(g2d);
 			if (craft.isAlive()) {
@@ -140,7 +140,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 					g2d.drawImage(a.getImage(), a.getX(), a.getY(), this);
 				}
 			}
-			
+
 			g2d.setColor(Color.WHITE);
 			g.setFont(GameFonts.SMALL);
 			g2d.drawString("Points: " + points, 5, 15);
@@ -202,7 +202,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 		if (currentIdx == this.levels.size() - 1) {
 			onGameEnd(this.points, true);
 		} else {
-			Level next = this.levels.get(currentIdx + 1);
+			LevelBase next = this.levels.get(currentIdx + 1);
 			currentLevel.pause();
 			currentLevel = next;
 			currentLevel.start();
