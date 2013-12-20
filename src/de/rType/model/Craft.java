@@ -63,7 +63,7 @@ public class Craft extends GameObject {
 	        case KeyEvent.VK_SPACE:
 	        	firepower++;
 	        	System.out.println("Pressed");
-	        	Sound.build_up.play();
+	        	Sound.BUILD_UP.play();
 	            break;
 	        case KeyEvent.VK_LEFT:
 	        	dx = -3;
@@ -84,7 +84,7 @@ public class Craft extends GameObject {
 
 	public void fire() {
 		missiles.add(new Missile(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2), this.firepower));
-		Sound.laser_small.play();
+		Sound.LASER_SMALL.play();
 		System.out.println(firepower);
 	}
 

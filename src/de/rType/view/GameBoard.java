@@ -248,7 +248,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 					if (!a.isAlive()) {
 						points += 10;
 						aliens.remove(a);
-						Sound.explosion.play();
+						Sound.EXPLOSION.play();
 					}
 				}
 			}

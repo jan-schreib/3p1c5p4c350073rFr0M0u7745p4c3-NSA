@@ -16,11 +16,11 @@ import de.rType.main.RType;
 public class Sound {
 
 	//Hier gewuenschte soundzzz vars. erstellen
-	public static final Sound laser_small = new Sound("/de/rType/resources/laser_small.wav");
-	public static final Sound laser_medium = new Sound("/de/rType/resources/laser_medium.wav");
-	public static final Sound laser_huge = new Sound("/de/rType/resources/laser2.wav");
-	public static final Sound explosion = new Sound("/de/rType/resources/explo2.wav");
-	public static final Sound build_up = new Sound("/de/rType/resources/up_new.wav");
+	public static final Sound LASER_SMALL = new Sound("/de/rType/resources/laser_small.wav");
+	public static final Sound LASER_MEDIUM = new Sound("/de/rType/resources/laser_medium.wav");
+	public static final Sound LASER_HUGE = new Sound("/de/rType/resources/laser2.wav");
+	public static final Sound EXPLOSION = new Sound("/de/rType/resources/explo2.wav");
+	public static final Sound BUILD_UP = new Sound("/de/rType/resources/up_new.wav");
 	
 	private AudioClip clip;
 
