@@ -1,5 +1,7 @@
 package de.rType.main;
 
+import javax.swing.JFrame;
+
 import global.GlobalSettings;
 import de.rType.model.Pair;
 
@@ -25,7 +27,7 @@ public class Enviroment {
 	}
 
 	private GlobalSettings globalSettings;
-	private Pair<Integer, Integer> resolution;
+	private JFrame frame;
 
 	public GlobalSettings getGlobalSettings() {
 		return globalSettings;
@@ -33,11 +35,17 @@ public class Enviroment {
 
 	public void setGlobalSettings(GlobalSettings globalSetting) {
 		this.globalSettings = globalSetting;
-		this.resolution = new Pair<Integer, Integer>(globalSetting.getResolution()[0], globalSetting.getResolution()[1]);
 	}
 
 	public Pair<Integer, Integer> getResolution() {
-		return resolution;
+		return new Pair<Integer, Integer>(globalSettings.getResolution()[0], globalSettings.getResolution()[1]);
+	}
+	
+	public void setFrame(JFrame frame){
+		this.frame = frame;
+	}
+	public void updateFrame(){
+		frame.setSize(getResolution().getValueOne(), getResolution().getValueTwo());
 	}
 
 }
