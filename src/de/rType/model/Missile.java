@@ -12,14 +12,15 @@ public class Missile extends GameObject {
 	public int getDamage() {
 		return damage;
 	}
+
 	public void setDamage(int firepower) {
 		damage = firepower;
 	}
-	
+
 	@Override
 	public void move() {
 		super.move();
-		if(getX() > resolution.getValueOne()){
+		if (getX() > resolution.getValueOne()) {
 			damage = 0;
 		}
 	}

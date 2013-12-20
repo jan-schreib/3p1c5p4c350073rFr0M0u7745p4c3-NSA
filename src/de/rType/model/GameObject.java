@@ -15,8 +15,9 @@ abstract public class GameObject {
 	private Image image;
 	private int speed;
 	protected int hp; // Healthpoints
-	protected Pair<Integer, Integer> resolution =  Enviroment.getEnviroment().getResolution();	
-	
+	protected Pair<Integer, Integer> resolution = Enviroment.getEnviroment()
+			.getResolution();
+
 	public GameObject(int x, int y, String image, int speed, int hp) {
 		this.x = x;
 		this.y = y;
@@ -24,7 +25,8 @@ abstract public class GameObject {
 		this.image = i.getImage();
 		this.speed = speed;
 		this.hp = hp;
-		this.hitbox = new Rectangle(x, y, this.image.getWidth(null), this.image.getHeight(null));
+		this.hitbox = new Rectangle(x, y, this.image.getWidth(null),
+				this.image.getHeight(null));
 	}
 
 	public int getX() {
@@ -84,7 +86,8 @@ abstract public class GameObject {
 
 	public void move() {
 		x += speed;
-		if (x > 1200 || x < 0) {
+		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
+		if (x > res.getValueOne() || x < 0) {
 			hp = 0;
 		}
 	}
