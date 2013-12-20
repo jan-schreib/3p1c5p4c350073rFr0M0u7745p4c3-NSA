@@ -173,6 +173,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 				if (m.isAlive()) {
 					m.move();
 				} else {
+					System.out.println("MISSLE DEAD REMOVE");
 					ms.remove(i);
 				}
 			}
@@ -241,7 +242,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 					m.hit(1);
 					a.hit(m.getDamage());
-					if (!m.isAlive() || !m.isGoneOut()) {
+					if (!m.isAlive() || m.isGoneOut()) {
 						ms.remove(m);
 					}
 					if (!a.isAlive()) {

@@ -36,7 +36,8 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 
 	public void initialize() {
 		Enviroment env = Enviroment.getEnviroment();
-		setSize(env.getResolution().getValueOne(), env.getResolution().getValueTwo());
+		env.setFrame(this);
+		env.updateFrame();
 		final RType me = this;
 		MenuListener listener = new MenuListener() {
 
@@ -67,7 +68,8 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 								showMenu(false);
 							}
 						};
-						if (HighScores.getInstance().isHighScore(gameBoard.points)) {
+						if (HighScores.getInstance().isHighScore(
+								gameBoard.points)) {
 							highScorePanel.readPlayerName(gameBoard.points);
 							getContentPane().add(highScorePanel);
 							highScorePanel.requestFocusInWindow();
@@ -95,7 +97,7 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 
 			@Override
 			public void showOptions() {
-				// TODO Show Options
+				menu.setOptions(true);
 			}
 
 			@Override
@@ -118,6 +120,10 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 			@Override
 			public void resumeGame() {
 				if (gameBoard != null) {
+
+					setSize(Enviroment.getEnviroment().getResolution()
+							.getValueOne(), Enviroment.getEnviroment()
+							.getResolution().getValueTwo());
 					menu.getResumeItem().setVisible(false);
 					menu.setVisible(false);
 					gameBoard.requestFocusInWindow();
@@ -150,7 +156,8 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 	}
 
 	@Override
-	public void runGame(GlobalSettings globalSettings, MainMenuInterface mainMenuRef) {
+	public void runGame(GlobalSettings globalSettings,
+			MainMenuInterface mainMenuRef) {
 		Enviroment.getEnviroment().setGlobalSettings(globalSettings);
 		collectionMenu = mainMenuRef;
 		initialize();
@@ -172,9 +179,12 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 		try {
 
 			BufferedImage[] images = new BufferedImage[3];
-			images[0] = ImageIO.read(this.getClass().getResource(GAME_PICS_PATH + "eins.png"));
-			images[1] = ImageIO.read(this.getClass().getResource(GAME_PICS_PATH + "zwei.png"));
-			images[2] = ImageIO.read(this.getClass().getResource(GAME_PICS_PATH + "drei.png"));
+			images[0] = ImageIO.read(this.getClass().getResource(
+					GAME_PICS_PATH + "eins.png"));
+			images[1] = ImageIO.read(this.getClass().getResource(
+					GAME_PICS_PATH + "zwei.png"));
+			images[2] = ImageIO.read(this.getClass().getResource(
+					GAME_PICS_PATH + "drei.png"));
 
 			return images;
 		} catch (IOException e) {
