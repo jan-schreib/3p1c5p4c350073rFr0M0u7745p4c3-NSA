@@ -16,7 +16,7 @@ public class Craft extends GameObject {
 
 	private int dx;
 	private int dy;
-	
+	private int firepower = 1;
 	private static int X_MAX = 730; 
 	private static int Y_MAX = 500;
 	private static int X_MIN = 0;
@@ -61,9 +61,9 @@ public class Craft extends GameObject {
 		int key = e.getKeyCode();
 		  switch(key){
 	        case KeyEvent.VK_SPACE:
-	        	fire();
+	        	firepower++;
+	        	System.out.println("Pressed");
 	            break;
-
 	        case KeyEvent.VK_LEFT:
 	        	dx = -3;
 	            break;
@@ -82,13 +82,20 @@ public class Craft extends GameObject {
 	}
 
 	public void fire() {
-		missiles.add(new Missile(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2) - 5));
+		missiles.add(new Missile(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2) - 5, this.firepower));
 		Sound.fire.play();
+		System.out.println(firepower);
 	}
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 		  switch(key){
+		  	case KeyEvent.VK_SPACE:
+		  		System.out.println("Released");
+		  		fire();
+		  		
+	        	firepower = 1;
+	            break;
 	        case KeyEvent.VK_LEFT:
 	        	dx = 0;
 	            break;
