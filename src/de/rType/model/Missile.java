@@ -11,11 +11,11 @@ public class Missile extends GameObject {
 	public int getDamage() {
 		return damage;
 	}
-	
+
 	@Override
 	public void move() {
 		super.move();
-		if(getX() > resolution.getValueOne()){
+		if (getX() > resolution.getValueOne()) {
 			damage = 0;
 		}
 	}

@@ -46,7 +46,7 @@ public class LevelTwo extends LevelBase {
 
 	@Override
 	protected void initializeDrawTasks() {
-		this.addDrawTask(new LevelDrawTask(0, 5000) {
+		this.addDrawTask(new LevelDrawTask(0, 3000) {
 
 			@Override
 			public void drawTask(Graphics g) {

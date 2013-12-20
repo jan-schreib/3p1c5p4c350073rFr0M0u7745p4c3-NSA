@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -45,9 +46,9 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	private Craft craft;
 	private LevelBase currentLevel;
 	private ArrayList<LevelBase> levels = new ArrayList<LevelBase>(3);
-	private ArrayList<Alien> aliens = new ArrayList<Alien>();
+	private LinkedList<Alien> aliens = new LinkedList<Alien>();
 	private long levelEndTime = 0;
-	Image bg;
+	private Image bg;
 	private boolean ingame;
 	private int B_WIDTH;
 	private int B_HEIGHT;
@@ -72,7 +73,8 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 		});
-		ImageIcon icon = new ImageIcon(this.getClass().getResource("/de/rType/resources/bg.jpg"));
+		ImageIcon icon = new ImageIcon(this.getClass().getResource(
+				"/de/rType/resources/bg.jpg"));
 		bg = icon.getImage();
 		setFocusable(true);
 		setBackground(Color.GREEN);
@@ -125,7 +127,8 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			g2d.drawImage(bg, 0, 0, null);
 			currentLevel.drawLevel(g2d);
 			if (craft.isAlive()) {
-				g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(), this);
+				g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(),
+						this);
 			}
 			LinkedList<Missile> ms = craft.getMissiles();
 
@@ -152,7 +155,8 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			g.setColor(Color.WHITE);
 			g.setFont(small);
 
-			g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
+			g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2,
+					B_HEIGHT / 2);
 		}
 
 		Toolkit.getDefaultToolkit().sync();
@@ -166,10 +170,11 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 			for (int i = 0; i < ms.size(); i++) {
 				Missile m = ms.get(i);
-				if (m.isAlive())
+				if (m.isAlive()) {
 					m.move();
-				else
+				} else {
 					ms.remove(i);
+				}
 			}
 			// Alien handling
 			for (int i = 0; i < aliens.size(); i++) {
@@ -191,7 +196,8 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			if (aliens.size() == 0 && currentLevel.isDone()) {
 				startNextLevel();
 			}
-		} else if ((levelEndTime + 3000) > GregorianCalendar.getInstance().getTimeInMillis()) {
+		} else if ((levelEndTime + 3000) > GregorianCalendar.getInstance()
+				.getTimeInMillis()) {
 			onGameEnd(this.points, false);
 		}
 		repaint();
@@ -222,7 +228,8 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 				a.criticalHit();
 				aliens.remove(a);
 				ingame = false;
-				levelEndTime = GregorianCalendar.getInstance().getTimeInMillis();
+				levelEndTime = GregorianCalendar.getInstance()
+						.getTimeInMillis();
 			}
 			// Missile vs. Alien.
 			for (int i = 0; i < ms.size(); i++) {
@@ -231,10 +238,12 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 				Rectangle hitBoxMissile = m.getHitbox();
 
 				if (hitBoxMissile.intersects(hitboxAlien) && a.isAlive()) {
-					ms.remove(m);
 
+					m.hit(1);
 					a.hit(m.getDamage());
-
+					if (!m.isAlive() || !m.isGoneOut()) {
+						ms.remove(m);
+					}
 					if (!a.isAlive()) {
 						points += 10;
 						aliens.remove(a);
@@ -254,7 +263,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	 * 
 	 * @return
 	 */
-	public ArrayList<Alien> getCurrentAliens() {
+	public List<Alien> getCurrentAliens() {
 		return aliens;
 	}
 }
