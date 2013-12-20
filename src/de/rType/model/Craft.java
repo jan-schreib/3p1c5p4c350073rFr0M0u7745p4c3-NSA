@@ -84,7 +84,7 @@ public class Craft extends GameObject {
 
 	public void fire() {
 		missiles.add(new Missile(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2), this.firepower));
-		Sound.fire.play();
+		Sound.laser_small.play();
 		System.out.println(firepower);
 	}
 
