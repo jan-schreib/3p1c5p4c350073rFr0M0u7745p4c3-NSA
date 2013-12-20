@@ -11,9 +11,9 @@ import javax.swing.ImageIcon;
  */
 public class Missile extends GameObject {
 
-	protected int damage = 1;
+	protected int damage = 4;
 	private static final String LASER_UNCHARGED = "/de/rType/resources/beam_red_small.png";
-	private static final String LASER_CHARGED = "/de/rType/resources/craft.png";
+	private static final String LASER_CHARGED = "/de/rType/resources/beams_partial.png";
 	private static final String LASER_FULL = "/de/rType/resources/beam_full.png";
 	
 	public Missile(int x, int y, int damage) {
