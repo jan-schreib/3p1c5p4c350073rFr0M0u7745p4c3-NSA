@@ -29,7 +29,7 @@ public class Sound {
 			e.printStackTrace();
 		}
 	}
-	//Funktion zum abspielen der oben erstellent soundz
+	//Funktion zum abspielen der oben erstellent sounds
 	public void play() {
 		try {
 			new Thread() {
