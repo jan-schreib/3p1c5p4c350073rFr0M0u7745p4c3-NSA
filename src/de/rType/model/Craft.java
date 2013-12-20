@@ -16,7 +16,7 @@ public class Craft extends GameObject {
 
 	private int dx;
 	private int dy;
-	private int firepower = 9;
+	private int firepower = 0;
 	private static int X_MAX = 730; 
 	private static int Y_MAX = 500;
 	private static int X_MIN = 0;
@@ -82,7 +82,7 @@ public class Craft extends GameObject {
 	}
 
 	public void fire() {
-		missiles.add(new Missile(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2) - 5, this.firepower));
+		missiles.add(new Missile(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2), this.firepower));
 		Sound.fire.play();
 		System.out.println(firepower);
 	}
@@ -93,7 +93,7 @@ public class Craft extends GameObject {
 		  	case KeyEvent.VK_SPACE:
 		  		System.out.println("Released");
 		  		fire();
-	        	firepower = 1;
+	        	firepower = 9;
 	            break;
 	        case KeyEvent.VK_LEFT:
 	        	dx = 0;
