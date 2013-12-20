@@ -18,6 +18,7 @@ public class Sound {
 	//Hier gewuenschte soundzzz vars. erstellen
 	public static final Sound fire = new Sound("/de/rType/resources/laser2.wav");
 	public static final Sound explosion = new Sound("/de/rType/resources/explo2.wav");
+	public static final Sound build_up = new Sound("/de/rType/resources/up.wav");
 	
 	private AudioClip clip;
 
