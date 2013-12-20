@@ -63,6 +63,7 @@ public class Craft extends GameObject {
 	        case KeyEvent.VK_SPACE:
 	        	firepower++;
 	        	System.out.println("Pressed");
+	        	Sound.build_up.play();
 	            break;
 	        case KeyEvent.VK_LEFT:
 	        	dx = -3;
