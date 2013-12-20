@@ -16,7 +16,7 @@ public class Craft extends GameObject {
 
 	private int dx;
 	private int dy;
-	private int firepower = 1;
+	private int firepower = 9;
 	private static int X_MAX = 730; 
 	private static int Y_MAX = 500;
 	private static int X_MIN = 0;
@@ -93,7 +93,6 @@ public class Craft extends GameObject {
 		  	case KeyEvent.VK_SPACE:
 		  		System.out.println("Released");
 		  		fire();
-		  		
 	        	firepower = 1;
 	            break;
 	        case KeyEvent.VK_LEFT:
