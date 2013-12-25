@@ -5,9 +5,8 @@ public class AlienThree extends Alien {
 
 	private boolean stay = false;
 
-
 	public AlienThree(int x, int y) {
-		super(x,y);
+		super(x, y);
 	}
 
 	public AlienThree() {
@@ -17,12 +16,12 @@ public class AlienThree extends Alien {
 	@Override
 	public void move() {
 		super.move();
-		if(!stay) {
-			if((getX()%3) == 0) {
+		if (!stay) {
+			if ((getX() % 3) == 0) {
 				this.y++;
 			}
-			if(getY()>=resolution.getValueTwo()-50) {
-				setY(resolution.getValueTwo()-50);
+			if (getY() >= resolution.getValueTwo() - 50) {
+				setY(resolution.getValueTwo() - 50);
 				stay = true;
 			}
 		}

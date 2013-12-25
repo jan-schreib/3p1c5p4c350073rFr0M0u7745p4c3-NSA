@@ -34,6 +34,11 @@ public class AlienOne extends Alien {
 			}
 		}
 	}
+	@Override
+	public void recalculate(Pair<Integer, Integer> resolution, double factorX, double factorY) {
+		super.recalculate(resolution, factorX, factorY);
+		sinus = MathUtil.getMinMaxSinus(x, 0, 128, y);
+	}
 	
 	@Override
 	public void setPosition(int x, int y) {

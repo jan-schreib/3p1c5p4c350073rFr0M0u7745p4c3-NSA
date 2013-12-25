@@ -163,4 +163,18 @@ public class Menu extends JPanel {
 		g.drawString(text, (res.getValueOne() - metrix.stringWidth(text)) / 2,
 				y);
 	}
+
+	public void checkSelection() {
+		for (MenuItem item : items) {
+			if (item.isSelected() && item.isVisible()) {
+				return;
+			}
+		}
+		for (MenuItem item : items) {
+			if (item.isVisible()) {
+				item.setSelected(true);
+				return;
+			}
+		}
+	}
 }

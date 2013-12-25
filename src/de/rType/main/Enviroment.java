@@ -40,11 +40,12 @@ public class Enviroment {
 	public Pair<Integer, Integer> getResolution() {
 		return new Pair<Integer, Integer>(globalSettings.getResolution()[0], globalSettings.getResolution()[1]);
 	}
-	
-	public void setFrame(JFrame frame){
+
+	public void setFrame(JFrame frame) {
 		this.frame = frame;
 	}
-	public void updateFrame(){
+
+	public void updateFrame() {
 		frame.setSize(getResolution().getValueOne(), getResolution().getValueTwo());
 	}
 

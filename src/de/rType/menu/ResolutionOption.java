@@ -3,7 +3,13 @@ package de.rType.menu;
 import global.GlobalSettings;
 import de.rType.main.Enviroment;
 import de.rType.model.Pair;
+import de.rType.repository.Recalculator;
 
+/**
+ * 
+ * @author Jo
+ * 
+ */
 public class ResolutionOption extends OptionMenuItem {
 
 	private enum Resolution {
@@ -28,14 +34,12 @@ public class ResolutionOption extends OptionMenuItem {
 	@Override
 	public String getValueText() {
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
-		System.out.println("VAL: " + res.getValueOne());
 		return res.getValueOne() + "x" + res.getValueTwo();
 	}
 
 	@Override
 	public void performChange() {
-		GlobalSettings settings = Enviroment.getEnviroment()
-				.getGlobalSettings();
+		GlobalSettings settings = Enviroment.getEnviroment().getGlobalSettings();
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
 		Resolution[] values = Resolution.values();
 		Resolution newRes = null;
@@ -48,8 +52,8 @@ public class ResolutionOption extends OptionMenuItem {
 				}
 			}
 		}
-		settings.setResolution(newRes.getValue().getValueOne(), newRes
-				.getValue().getValueTwo());
+		Recalculator.getInstance().recalculate(res, newRes.getValue());
+		settings.setResolution(newRes.getValue().getValueOne(), newRes.getValue().getValueTwo());
 		Enviroment.getEnviroment().updateFrame();
 	}
 }

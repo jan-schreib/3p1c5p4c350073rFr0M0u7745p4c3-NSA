@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 
 import de.rType.main.Enviroment;
 
-abstract public class GameObject {
+abstract public class GameObject implements Recalculable {
 
 	protected int x;
 	protected int y;
@@ -15,8 +15,7 @@ abstract public class GameObject {
 	private Image image;
 	private int speed;
 	protected int hp; // Healthpoints
-	protected Pair<Integer, Integer> resolution = Enviroment.getEnviroment()
-			.getResolution();
+	protected Pair<Integer, Integer> resolution = Enviroment.getEnviroment().getResolution();
 
 	public GameObject(int x, int y, String image, int speed, int hp) {
 		this.x = x;
@@ -25,8 +24,7 @@ abstract public class GameObject {
 		this.image = i.getImage();
 		this.speed = speed;
 		this.hp = hp;
-		this.hitbox = new Rectangle(x, y, this.image.getWidth(null),
-				this.image.getHeight(null));
+		this.hitbox = new Rectangle(x, y, this.image.getWidth(null), this.image.getHeight(null));
 	}
 
 	public int getX() {
@@ -66,6 +64,7 @@ abstract public class GameObject {
 
 	public void setImage(Image image) {
 		this.image = image;
+		this.hitbox.setSize(image.getWidth(null), image.getHeight(null));
 	}
 
 	public int getSpeed() {

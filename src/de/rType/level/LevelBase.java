@@ -73,6 +73,7 @@ public abstract class LevelBase implements ActionListener {
 			// Time 0 is not allowed!
 			time = LEVEL_INTERVAL;
 		}
+		alien.setLasers(gameBoard.getCurrentLasers());
 		enemyTasks.add(new EnemyTask(alien, time));
 	}
 

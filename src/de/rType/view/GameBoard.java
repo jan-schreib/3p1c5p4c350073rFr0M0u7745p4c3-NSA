@@ -28,8 +28,11 @@ import de.rType.level.LevelTwo;
 import de.rType.main.Enviroment;
 import de.rType.model.Alien;
 import de.rType.model.Craft;
-import de.rType.model.Missile;
+import de.rType.model.Laser;
 import de.rType.model.Pair;
+import de.rType.model.Recalculable;
+import de.rType.model.RecalculableContainer;
+import de.rType.repository.Recalculator;
 import de.rType.resources.GameFonts;
 import de.rType.util.Sound;
 
@@ -39,7 +42,7 @@ import de.rType.util.Sound;
  * @author Jo
  * 
  */
-public abstract class GameBoard extends JPanel implements ActionListener {
+public abstract class GameBoard extends JPanel implements ActionListener, RecalculableContainer {
 
 	private static final long serialVersionUID = 1L;
 	private Timer timer;
@@ -47,6 +50,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	private LevelBase currentLevel;
 	private ArrayList<LevelBase> levels = new ArrayList<LevelBase>(3);
 	private LinkedList<Alien> aliens = new LinkedList<Alien>();
+	private List<Laser> lasers = new LinkedList<Laser>();
 	private long levelEndTime = 0;
 	private Image bg;
 	private boolean ingame;
@@ -73,8 +77,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 		});
-		ImageIcon icon = new ImageIcon(this.getClass().getResource(
-				"/de/rType/resources/bg.jpg"));
+		ImageIcon icon = new ImageIcon(this.getClass().getResource("/de/rType/resources/bg.jpg"));
 		bg = icon.getImage();
 		setFocusable(true);
 		setBackground(Color.GREEN);
@@ -84,6 +87,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 		ingame = true;
 		craft = new Craft();
+		craft.setMissileList(lasers);
 
 		// add levels
 		LevelBase level = new LevelOne(this);
@@ -91,6 +95,16 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 		levels.add(new LevelTwo(this));
 		levels.add(new LevelThree(this));
 		currentLevel = level;
+		Recalculator.getInstance().register(this);
+	}
+
+	@Override
+	public List<Recalculable> getRecalculableItems() {
+		List<Recalculable> items = new LinkedList<Recalculable>();
+		items.add(craft);
+		items.addAll(lasers);
+		// Aliens recalculated by the repository.
+		return items;
 	}
 
 	public boolean isInGame() {
@@ -122,18 +136,17 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 		if (ingame) {
 
+			Pair<Integer, Integer> resolution = Enviroment.getEnviroment().getResolution();
+
 			Graphics2D g2d = (Graphics2D) g;
 			// add the bg graphic!
 			g2d.drawImage(bg, 0, 0, null);
 			currentLevel.drawLevel(g2d);
 			if (craft.isAlive()) {
-				g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(),
-						this);
+				g2d.drawImage(craft.getImage(), craft.getX(), craft.getY(), this);
 			}
-			LinkedList<Missile> ms = craft.getMissiles();
 
-			for (int i = 0; i < ms.size(); i++) {
-				Missile m = (Missile) ms.get(i);
+			for (Laser m : lasers) {
 				g2d.drawImage(m.getImage(), m.getX(), m.getY(), this);
 			}
 
@@ -144,9 +157,26 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 				}
 			}
 
+			// Draw Points
 			g2d.setColor(Color.WHITE);
 			g.setFont(GameFonts.SMALL);
 			g2d.drawString("Points: " + points, 5, 15);
+
+			// Draw Firepower Indicator
+			int firePower = craft.getFirePower();
+			if (firePower > 10) {
+				firePower = 10;
+			}
+
+			int indicatorY = resolution.getValueTwo() - 60;
+			int indicatorWidth = 150;
+			g2d.setColor(Color.WHITE);
+			g2d.drawRect(10, indicatorY, indicatorWidth, 20);
+			g2d.setColor(Color.YELLOW);
+			if (firePower > 6) {
+				g2d.setColor(Color.WHITE);
+			}
+			g2d.fillRect(10, indicatorY, (indicatorWidth / 10 * firePower), 20);
 
 		} else {
 			String msg = "Game Over";
@@ -155,8 +185,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			g.setColor(Color.WHITE);
 			g.setFont(small);
 
-			g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2,
-					B_HEIGHT / 2);
+			g.drawString(msg, (B_WIDTH - metr.stringWidth(msg)) / 2, B_HEIGHT / 2);
 		}
 
 		Toolkit.getDefaultToolkit().sync();
@@ -166,17 +195,17 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (ingame) {
 			// Missile handling
-			LinkedList<Missile> ms = craft.getMissiles();
 
-			for (int i = 0; i < ms.size(); i++) {
-				Missile m = ms.get(i);
+			List<Laser> removeList = new LinkedList<Laser>();
+			for (Laser m : lasers) {
 				if (m.isAlive()) {
 					m.move();
 				} else {
-					System.out.println("MISSLE DEAD REMOVE");
-					ms.remove(i);
+					removeList.add(m);
 				}
 			}
+			lasers.removeAll(removeList);
+
 			// Alien handling
 			for (int i = 0; i < aliens.size(); i++) {
 				Alien a = (Alien) aliens.get(i);
@@ -197,8 +226,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			if (aliens.size() == 0 && currentLevel.isDone()) {
 				startNextLevel();
 			}
-		} else if ((levelEndTime + 3000) > GregorianCalendar.getInstance()
-				.getTimeInMillis()) {
+		} else if ((levelEndTime + 3000) > GregorianCalendar.getInstance().getTimeInMillis()) {
 			onGameEnd(this.points, false);
 		}
 		repaint();
@@ -219,7 +247,7 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	public void checkCollisions() {
 
 		Rectangle hitboxCraft = craft.getHitbox();
-		LinkedList<Missile> ms = craft.getMissiles();
+
 		// Player collides with Alien.
 		for (int j = 0; j < aliens.size(); j++) {
 			Alien a = aliens.get(j);
@@ -227,14 +255,14 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 			if (hitboxCraft.intersects(hitboxAlien) && a.isAlive()) {
 				craft.criticalHit();
 				a.criticalHit();
+				Sound.EXPLOSION.play();
 				aliens.remove(a);
 				ingame = false;
-				levelEndTime = GregorianCalendar.getInstance()
-						.getTimeInMillis();
+				levelEndTime = GregorianCalendar.getInstance().getTimeInMillis();
 			}
-			// Missile vs. Alien.
-			for (int i = 0; i < ms.size(); i++) {
-				Missile m = ms.get(i);
+			// Laser vs. Alien.
+			List<Laser> removeList = new LinkedList<Laser>();
+			for (Laser m : lasers) {
 
 				Rectangle hitBoxMissile = m.getHitbox();
 
@@ -242,16 +270,26 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 
 					m.hit(1);
 					a.hit(m.getDamage());
+
 					if (!m.isAlive() || m.isGoneOut()) {
-						ms.remove(m);
+						removeList.add(m);
 					}
 					if (!a.isAlive()) {
-						points += 10;
+						points += a.getScore();
 						aliens.remove(a);
 						Sound.EXPLOSION.play();
 					}
 				}
+
+				if (m.isAlive() && hitBoxMissile.intersects(hitboxCraft)) {
+					craft.criticalHit();
+					m.criticalHit();
+					Sound.EXPLOSION.play();
+					ingame = false;
+					levelEndTime = GregorianCalendar.getInstance().getTimeInMillis();
+				}
 			}
+			lasers.removeAll(removeList);
 		}
 	}
 
@@ -266,5 +304,14 @@ public abstract class GameBoard extends JPanel implements ActionListener {
 	 */
 	public List<Alien> getCurrentAliens() {
 		return aliens;
+	}
+
+	/**
+	 * Gibt die Liste der aktuell auf dem Board aktiven Laser zurueck.
+	 * 
+	 * @return
+	 */
+	public List<Laser> getCurrentLasers() {
+		return lasers;
 	}
 }

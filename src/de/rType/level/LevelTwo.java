@@ -10,6 +10,7 @@ import de.rType.model.Alien;
 import de.rType.model.AlienOne;
 import de.rType.model.AlienThree;
 import de.rType.model.AlienTwo;
+import de.rType.model.BossEnemy;
 import de.rType.model.Pair;
 import de.rType.repository.AlienRepository;
 import de.rType.resources.GameFonts;
@@ -34,14 +35,17 @@ public class LevelTwo extends LevelBase {
 		Pair<Integer, Integer> resolution = Enviroment.getEnviroment().getResolution();
 		Alien arr[] = { new AlienOne(), new AlienTwo(), new AlienThree() };
 
-		for (int i = 0; i < 5; i++) {
-			long t = time * i;
+		long t = 0;
+		for (int i = 0; i < 15; i++) {
+			t = time * i;
 			int randAlien = (int) (Math.random() * 3);
 			int randPos = (int) (Math.random() * resolution.getValueTwo());
 			Alien a = AlienRepository.getInstance().get(arr[randAlien].getClass());
 			a.setPosition(resolution.getValueOne(), randPos);
 			this.addAlien(t, a);
 		}
+		Alien boss = AlienRepository.getInstance().get(BossEnemy.class);
+		this.addAlien(t + 250, boss);
 	}
 
 	@Override
