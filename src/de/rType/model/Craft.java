@@ -1,7 +1,11 @@
 package de.rType.model;
 
+import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
+import javax.swing.ImageIcon;
 
 import de.rType.main.Enviroment;
 import de.rType.util.Sound;
@@ -29,17 +33,26 @@ public class Craft extends GameObject {
 		X_MAX = Enviroment.getEnviroment().getResolution().getValueOne() - hitbox.width;
 		Y_MAX = Enviroment.getEnviroment().getResolution().getValueTwo() - hitbox.height;
 	}
-	
-	public void setMissileList(List<Laser> missiles){
+
+	public void setMissileList(List<Laser> missiles) {
 		this.lasers = missiles;
 	}
- 
+
 	@Override
 	public void recalculate(Pair<Integer, Integer> resolution, double factorX, double factorY) {
-		x = (int) Math.round(x * factorX);
-		y = (int) Math.round(y * factorY);
+		Image current = this.getImage();
+		int newWidth = Math.round((float) (current.getWidth(null) * factorX));
+		int newHeight = Math.round((float) (current.getHeight(null) * factorY));
+		Image newImage = current.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
+		ImageIcon icon = new ImageIcon(newImage);
+		this.setImage(icon.getImage());
+		int newX = Math.round((float) (factorX * x));
+		setX(newX);
+		int newY = Math.round((float) (factorY * y));
+		setY(newY);
 		X_MAX = resolution.getValueOne() - (hitbox.width);
 		Y_MAX = resolution.getValueTwo() - (hitbox.height);
+
 	}
 
 	public int getFirePower() {
@@ -98,7 +111,8 @@ public class Craft extends GameObject {
 	}
 
 	public void fire() {
-		lasers.add(new Laser(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2), this.firepower));
+		Rectangle hitbox = this.getHitbox();
+		lasers.add(new Laser(hitbox.x + hitbox.width, hitbox.y + (hitbox.height / 2), this.firepower));
 		Sound.BUILD_UP.stop();
 		if (this.firepower <= 3) {
 			Sound.LASER_SMALL.play();

@@ -48,6 +48,12 @@ public class Laser extends GameObject {
 
 	@Override
 	public void recalculate(Pair<Integer, Integer> resolution, double factorX, double factorY) {
+		Image current = this.getImage();
+		int newWidth = Math.round((float) (current.getWidth(null) * factorX));
+		int newHeight = Math.round((float) (current.getHeight(null) * factorY));
+		Image newImage = current.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
+		ImageIcon icon = new ImageIcon(newImage);
+		this.setImage(icon.getImage());
 		x = (int) Math.round(x * factorX);
 		y = (int) Math.round(y * factorY);
 	}

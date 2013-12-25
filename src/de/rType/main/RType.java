@@ -118,10 +118,8 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 
 			@Override
 			public void resumeGame() {
-				if (gameBoard != null) {
-
-					setSize(Enviroment.getEnviroment().getResolution().getValueOne(), Enviroment.getEnviroment().getResolution()
-							.getValueTwo());
+				if (gameBoard != null && gameBoard.isInGame()) {
+					setSize(Enviroment.getEnviroment().getResolution().getValueOne(), Enviroment.getEnviroment().getResolution().getValueTwo());
 					menu.getResumeItem().setVisible(false);
 					menu.setVisible(false);
 					gameBoard.requestFocusInWindow();
@@ -180,6 +178,7 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 		}
 		if (this.menu != null) {
 			menu.setSize(width, height);
+			menu.requestFocusInWindow();
 		}
 	}
 

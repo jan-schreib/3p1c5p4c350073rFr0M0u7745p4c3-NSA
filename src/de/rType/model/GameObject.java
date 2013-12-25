@@ -7,6 +7,12 @@ import javax.swing.ImageIcon;
 
 import de.rType.main.Enviroment;
 
+/**
+ * Base class for all game objects.
+ * 
+ * @author Jo
+ * 
+ */
 abstract public class GameObject implements Recalculable {
 
 	protected int x;
@@ -33,6 +39,7 @@ abstract public class GameObject implements Recalculable {
 
 	public void setX(int x) {
 		this.x = x;
+		this.hitbox.x = x;
 	}
 
 	public int getY() {
@@ -42,6 +49,7 @@ abstract public class GameObject implements Recalculable {
 	public void setY(int y) {
 		y = y - hitbox.height;
 		this.y = y;
+		this.hitbox.y = y;
 	}
 
 	public void setPosition(int x, int y) {
@@ -64,7 +72,7 @@ abstract public class GameObject implements Recalculable {
 
 	public void setImage(Image image) {
 		this.image = image;
-		this.hitbox.setSize(image.getWidth(null), image.getHeight(null));
+		this.hitbox = new Rectangle(x, y, this.image.getWidth(null), this.image.getHeight(null));
 	}
 
 	public int getSpeed() {

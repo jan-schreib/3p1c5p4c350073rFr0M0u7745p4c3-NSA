@@ -11,7 +11,7 @@ import de.rType.main.RType;
  * ca. jeder 10 Sound hackt, ohne thread noch schlimmer
  * 
  * @author rickuz
- * @author Jo
+ * 
  */
 
 public class Sound {
@@ -21,20 +21,12 @@ public class Sound {
 	public static final Sound LASER_MEDIUM = new Sound("/de/rType/resources/laser_medium.wav");
 	public static final Sound LASER_HUGE = new Sound("/de/rType/resources/laser2.wav");
 	public static final Sound EXPLOSION = new Sound("/de/rType/resources/explo2.wav");
-	public static final Sound BUILD_UP = new Sound("/de/rType/resources/up_new.wav", true);
+	public static final Sound BUILD_UP = new Sound("/de/rType/resources/up_new.wav");
 
-	private String url;
 	private AudioClip clip;
 
 	private Sound(String file) {
-		this(file, false);
-	}
-
-	private Sound(String url, boolean single) {
-		if (single) {
-			clip = Applet.newAudioClip(RType.class.getResource(url));
-		}
-		this.url = url;
+		clip = Applet.newAudioClip(RType.class.getResource(file));
 	}
 
 	// Funktion zum abspielen der oben erstellent soundz
@@ -43,16 +35,11 @@ public class Sound {
 			try {
 				new Thread() {
 					public void run() {
-						if (clip == null) {
-							Applet.newAudioClip(RType.class.getResource(url)).play();
-						} else {
-							clip.play();
-						}
+						clip.play();
 					}
 				}.start();
 			} catch (Throwable e) {
 				e.printStackTrace();
-				System.out.println("FAILED PLAYING AUDIOCLIP: " + url);
 			}
 		}
 	}

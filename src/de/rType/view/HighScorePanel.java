@@ -56,6 +56,8 @@ public abstract class HighScorePanel extends JPanel {
 				} else if (action.equals(PanelAction.READ_PLAYERNAME) && keyCode == KeyEvent.VK_BACK_SPACE
 						&& currentPlayername.length() > 0) {
 					currentPlayername = currentPlayername.substring(0, currentPlayername.length() - 1);
+				} else if (action.equals(PanelAction.SHOW_HIGHSCORES) && keyCode == KeyEvent.VK_ESCAPE) {
+					onComplete();
 				} else if (action.equals(PanelAction.READ_PLAYERNAME)) {
 					String s = getCharFromKeyEvent(e);
 					if (s != null) {
@@ -131,8 +133,7 @@ public abstract class HighScorePanel extends JPanel {
 				g.drawString(GET_PLAYERNAME_TEXT, (res.getValueOne() - metr.stringWidth(GET_PLAYERNAME_TEXT)) / 2, y);
 				y = (res.getValueTwo() / (16) * 5);
 				g.setColor(GameFonts.SPECIAL_COLOR);
-				g.drawString(currentPlayername + "_",
-						(res.getValueOne() - metr.stringWidth(currentPlayername + "_")) / 2, y);
+				g.drawString(currentPlayername + "_", (res.getValueOne() - metr.stringWidth(currentPlayername + "_")) / 2, y);
 			}
 		}
 	}
