@@ -24,6 +24,7 @@ import de.rType.resources.GameFonts;
 public class Menu extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	
 
 	private List<MenuItem> items;
 	private List<MenuItem> visibleList;

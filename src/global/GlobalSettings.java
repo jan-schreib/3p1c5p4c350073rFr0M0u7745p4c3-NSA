@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import de.rType.main.Enviroment;
+import de.rType.util.Sound;
+
 public class GlobalSettings {
     // Attributes
     private static final File GLOBALSETTINGSFILE = new File(
@@ -27,6 +30,12 @@ public class GlobalSettings {
 
     public void setMusicMuted(boolean musicMuted) {
         this.musicMuted = musicMuted;
+        if(Enviroment.getEnviroment().getGlobalSettings().getMusicMuted()) {
+            Sound.TITLE_MUSIC.stop();
+        } else {
+        	Sound.TITLE_MUSIC.play_music();
+        }
+
     }
 
     public boolean getSoundeffectsMuted() {
