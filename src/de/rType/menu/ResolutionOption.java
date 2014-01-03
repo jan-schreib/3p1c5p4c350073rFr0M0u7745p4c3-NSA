@@ -28,7 +28,7 @@ public class ResolutionOption extends OptionMenuItem {
 	}
 
 	public ResolutionOption() {
-		super("Auflösung", MenuItemKeys.RESULUTION);
+		super("Aufl\u00F6sung", MenuItemKeys.RESULUTION);
 	}
 
 	@Override

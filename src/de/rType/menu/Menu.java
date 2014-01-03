@@ -107,7 +107,7 @@ public class Menu extends JPanel {
 
 		this.optionsItems = Arrays.asList(new ResolutionOption(),
 				new SoundOptionItem(), new MusicOptionItem(),
-				new OptionMenuItem("Zurück", null) {
+				new OptionMenuItem("Zur\u00FCck", null) {
 
 					@Override
 					public void performChange() {
@@ -158,7 +158,7 @@ public class Menu extends JPanel {
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
 		int y = (res.getValueTwo() / (count + 2)) * (index);
 		String text = item.getText();
-		if (item instanceof OptionMenuItem && !item.getText().equals("Zurück")) {
+		if (item instanceof OptionMenuItem && !item.getText().equals("Zur\u00FCck")) {
 			text += ": " + ((OptionMenuItem) item).getValueText();
 		}
 		g.drawString(text, (res.getValueOne() - metrix.stringWidth(text)) / 2,
