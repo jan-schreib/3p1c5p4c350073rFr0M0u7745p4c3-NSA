@@ -27,11 +27,11 @@ public class BadBossEnemy extends BossEnemy implements ActionListener {
 	}
 
 	private DIR currentDirection = DIR.LEFT;
-
+	private static final String BADBOSSPIC = "/de/rType/resources/badboss.png";
 	public BadBossEnemy() {
 		super();
-		timer = new Timer(1000, this);
-		setImage(new ImageIcon(this.getClass().getResource("/de/rType/resources/alien_small.png")).getImage());
+		timer = new Timer(500, this);
+		setImage(new ImageIcon(this.getClass().getResource(BADBOSSPIC)).getImage());
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
 		minX = Math.round((float) (res.getValueOne() * 0.6));
 		maxX = res.getValueOne() - hitbox.width - 20;

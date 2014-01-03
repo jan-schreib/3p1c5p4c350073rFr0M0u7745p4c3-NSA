@@ -25,15 +25,16 @@ public class BossEnemy extends Alien implements ActionListener {
 	}
 
 	private DIR currentDirection = DIR.UP;
-
+	private static final String BOSSPIC = "/de/rType/resources/alien90.png";
+	
 	public BossEnemy() {
 		super();
 		timer = new Timer(1000, this);
-		setImage(new ImageIcon(this.getClass().getResource("/de/rType/resources/alien90.png")).getImage());
+		setImage(new ImageIcon(this.getClass().getResource(BOSSPIC)).getImage());
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
 		minY = Math.round((float) (res.getValueTwo() * 0.3));
 		maxY = Math.round((float) (res.getValueTwo() * 0.7));
-		setPosition(res.getValueOne() - 150, Math.round((float) (res.getValueTwo() * 0.5)));
+		setPosition(res.getValueOne() - 150 - hitbox.width, Math.round((float) (res.getValueTwo() * 0.5)));
 		setHp(20);
 	}
 
