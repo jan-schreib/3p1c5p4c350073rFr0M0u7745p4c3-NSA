@@ -10,7 +10,6 @@ import java.util.List;
 import javax.swing.Timer;
 
 import de.rType.model.Alien;
-import de.rType.util.Sound;
 import de.rType.view.GameBoard;
 
 /**
