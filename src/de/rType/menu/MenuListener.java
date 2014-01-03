@@ -1,6 +1,5 @@
 package de.rType.menu;
 
-import de.rType.util.Sound;
 
 /**
  * 
@@ -12,7 +11,6 @@ public abstract class MenuListener {
 	protected Menu menu;
 
 	public MenuListener() {
-		Sound.TITLE_MUSIC.play_music();
 	}
 
 	public void addToMenu(Menu menu) {
@@ -24,8 +22,6 @@ public abstract class MenuListener {
 		if (command != null && !command.isEmpty()) {
 			if (command.equals(MenuItemKeys.NEW_GAME)) {
 				newGame();
-				Sound.TITLE_MUSIC.stop();
-				Sound.LVL1.play_music();
 			} else if (command.equals(MenuItemKeys.RESUME)) {
 				resumeGame();
 			} else if (command.equals(MenuItemKeys.OPTIONS)) {

@@ -227,6 +227,7 @@ public abstract class GameBoard extends JPanel implements ActionListener, Recalc
 				startNextLevel();
 			}
 		} else if ((levelEndTime + 3000) > GregorianCalendar.getInstance().getTimeInMillis()) {
+			this.currentLevel.getLevelBossEnemy().setHp(0);
 			onGameEnd(this.points, false);
 		}
 		repaint();
