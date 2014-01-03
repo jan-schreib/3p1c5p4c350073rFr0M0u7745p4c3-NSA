@@ -29,7 +29,7 @@ public class BossEnemy extends Alien implements ActionListener {
 	public BossEnemy() {
 		super();
 		timer = new Timer(1000, this);
-		setImage(new ImageIcon(this.getClass().getResource("/de/rType/resources/alien_small.png")).getImage());
+		setImage(new ImageIcon(this.getClass().getResource("/de/rType/resources/alien90.png")).getImage());
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
 		minY = Math.round((float) (res.getValueTwo() * 0.3));
 		maxY = Math.round((float) (res.getValueTwo() * 0.7));

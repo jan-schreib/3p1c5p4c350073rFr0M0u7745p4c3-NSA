@@ -17,7 +17,7 @@ import de.rType.util.Sound;
  */
 public class Craft extends GameObject {
 
-	private static final String DEFAULT_CRAFT = "/de/rType/resources/craft.png";
+	private static final String DEFAULT_CRAFT = "/de/rType/resources/craft_new.png";
 
 	private int dx;
 	private int dy;
