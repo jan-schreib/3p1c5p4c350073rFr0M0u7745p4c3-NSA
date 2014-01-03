@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import de.rType.menu.Menu;
 import de.rType.menu.MenuListener;
 import de.rType.repository.HighScores;
+import de.rType.util.Sound;
 import de.rType.view.GameBoard;
 import de.rType.view.HighScorePanel;
 
@@ -46,6 +47,7 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 					gameBoard.setVisible(false);
 				}
 				menu.setVisible(false);
+				Sound.TITLE_MUSIC.stop();
 				gameBoard = new GameBoard() {
 
 					private static final long serialVersionUID = 1L;
@@ -122,6 +124,7 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 					setSize(Enviroment.getEnviroment().getResolution().getValueOne(), Enviroment.getEnviroment().getResolution().getValueTwo());
 					menu.getResumeItem().setVisible(false);
 					menu.setVisible(false);
+					Sound.TITLE_MUSIC.stop();
 					gameBoard.requestFocusInWindow();
 					gameBoard.start();
 				}
@@ -145,7 +148,7 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 		menu.getResumeItem().setVisible(pause);
 		menu.checkSelection();
 		menu.requestFocusInWindow();
-
+		Sound.TITLE_MUSIC.play_music();
 	}
 
 	public static void main(String[] args) {

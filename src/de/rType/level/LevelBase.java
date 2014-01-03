@@ -10,7 +10,7 @@ import java.util.List;
 import javax.swing.Timer;
 
 import de.rType.model.Alien;
-import de.rType.util.Sound;
+import de.rType.model.BossEnemy;
 import de.rType.view.GameBoard;
 
 /**
@@ -28,6 +28,7 @@ public abstract class LevelBase implements ActionListener {
 	private Timer timer;
 	private List<EnemyTask> enemyTasks = new ArrayList<EnemyTask>();
 	private List<LevelDrawTask> drawTasks = new ArrayList<LevelDrawTask>();
+	private BossEnemy levelBoss;
 
 	private class EnemyTask {
 
@@ -54,7 +55,25 @@ public abstract class LevelBase implements ActionListener {
 		this.timer = new Timer(LEVEL_INTERVAL, this);
 		this.initializeEnemys();
 		this.initializeDrawTasks();
+		this.levelBoss = createLevelBoss();
+		this.addAlien(getMaxTimeFromEnemys() + 500, levelBoss);
 	}
+	
+	public BossEnemy getLevelBossEnemy(){
+		return this.levelBoss;
+	}
+
+	private long getMaxTimeFromEnemys() {
+		long time = 0;
+		for (EnemyTask t : this.enemyTasks) {
+			if (t.getTime() > time) {
+				time = t.getTime();
+			}
+		}
+		return time;
+	}
+
+	protected abstract BossEnemy createLevelBoss();
 
 	protected abstract void initializeEnemys();
 

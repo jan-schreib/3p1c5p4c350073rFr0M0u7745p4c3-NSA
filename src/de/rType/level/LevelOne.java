@@ -14,6 +14,7 @@ import de.rType.model.BossEnemy;
 import de.rType.model.Pair;
 import de.rType.repository.AlienRepository;
 import de.rType.resources.GameFonts;
+import de.rType.util.Sound;
 import de.rType.view.GameBoard;
 
 /**
@@ -43,8 +44,24 @@ public class LevelOne extends LevelBase {
 			a.setPosition(resolution.getValueOne(), randPos);
 			this.addAlien(t, a);
 		}
-		Alien boss = AlienRepository.getInstance().get(BossEnemy.class);
-		this.addAlien(t + 250, boss);
+	}
+
+	@Override
+	public void start() {
+		super.start();
+		Sound.LVL1.play_music();
+	}
+
+	@Override
+	public void pause() {
+		super.pause();
+		Sound.LVL1.stop();
+	}
+
+	@Override
+	protected BossEnemy createLevelBoss() {
+		BossEnemy enemy = (BossEnemy) AlienRepository.getInstance().get(BossEnemy.class);
+		return enemy;
 	}
 
 	@Override
