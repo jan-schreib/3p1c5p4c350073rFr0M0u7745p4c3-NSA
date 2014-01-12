@@ -1,11 +1,8 @@
 package de.rType.model;
 
-import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.List;
-
-import javax.swing.ImageIcon;
 
 import de.rType.main.Enviroment;
 import de.rType.util.Sound;
@@ -40,19 +37,12 @@ public class Craft extends GameObject {
 
 	@Override
 	public void recalculate(Pair<Integer, Integer> resolution, double factorX, double factorY) {
-		Image current = this.getImage();
-		int newWidth = Math.round((float) (current.getWidth(null) * factorX));
-		int newHeight = Math.round((float) (current.getHeight(null) * factorY));
-		Image newImage = current.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
-		ImageIcon icon = new ImageIcon(newImage);
-		this.setImage(icon.getImage());
 		int newX = Math.round((float) (factorX * x));
 		setX(newX);
 		int newY = Math.round((float) (factorY * y));
 		setY(newY);
 		X_MAX = resolution.getValueOne() - (hitbox.width);
 		Y_MAX = resolution.getValueTwo() - (hitbox.height);
-
 	}
 
 	public int getFirePower() {

@@ -1,6 +1,5 @@
 package de.rType.model;
 
-import java.awt.Image;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -61,15 +60,7 @@ public class Alien extends GameObject {
 	}
 
 	@Override
-	public void recalculate(Pair<Integer, Integer> resolution, double factorX, double factorY) {
-
-		Image current = this.getImage();
-		int newWidth = Math.round((float) (current.getWidth(null) * factorX));
-		int newHeight = Math.round((float) (current.getHeight(null) * factorY));
-		Image newImage = current.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
-		ImageIcon icon = new ImageIcon(newImage);
-		this.setImage(icon.getImage());
-
+	public void recalculate(Pair<Integer, Integer> resolution, double factorX, double factorY) {		
 		startX = Math.round((float) (startX * factorX));
 		startY = Math.round((float) (startY * factorY));
 		x = Math.round((float) (x * factorX));
