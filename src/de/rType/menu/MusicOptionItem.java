@@ -2,7 +2,7 @@ package de.rType.menu;
 
 import global.GlobalSettings;
 import de.rType.main.Enviroment;
-import de.rType.util.Sound;
+import de.rType.util.Music;
 
 public class MusicOptionItem extends OptionMenuItem {
 
@@ -23,10 +23,10 @@ public class MusicOptionItem extends OptionMenuItem {
 		GlobalSettings settings = Enviroment.getEnviroment().getGlobalSettings();
 		if (settings.getMusicMuted()) {
 			settings.setMusicMuted(false);
-			Sound.TITLE_MUSIC.stop();
+			Music.TITLE.play();
 		} else {
 			settings.setMusicMuted(true);
-			Sound.TITLE_MUSIC.play_music();
+			Music.TITLE.pause();
 		}
 	}
 

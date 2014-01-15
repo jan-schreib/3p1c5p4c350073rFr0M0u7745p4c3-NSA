@@ -22,10 +22,7 @@ public class Sound {
 	public static final Sound LASER_HUGE = new Sound("/de/rType/resources/laser2.wav");
 	public static final Sound EXPLOSION = new Sound("/de/rType/resources/explo2.wav");
 	public static final Sound BUILD_UP = new Sound("/de/rType/resources/up_new.wav");
-	public static final Sound TITLE_MUSIC = new Sound("/de/rType/resources/r-type.wav");
-	public static final Sound LVL1 = new Sound("/de/rType/resources/lvl1.wav");
-	public static final Sound LVL2 = new Sound("/de/rType/resources/lvl2.wav");
-	public static final Sound LVL3 = new Sound("/de/rType/resources/lvl3.wav");
+
 
 	private AudioClip clip;
 

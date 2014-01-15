@@ -15,7 +15,7 @@ import de.rType.model.BossEnemy;
 import de.rType.model.Pair;
 import de.rType.repository.AlienRepository;
 import de.rType.resources.GameFonts;
-import de.rType.util.Sound;
+import de.rType.util.Music;
 import de.rType.view.GameBoard;
 
 /**
@@ -28,7 +28,7 @@ public class LevelTwo extends LevelBase {
 	private static final String LEVEL_TEXT = "Level 2";
 
 	public LevelTwo(GameBoard gameBoard) {
-		super(gameBoard);
+		super(gameBoard, Music.LVL2);
 	}
 
 	@Override
@@ -46,18 +46,6 @@ public class LevelTwo extends LevelBase {
 			a.setPosition(resolution.getValueOne(), randPos);
 			this.addAlien(t, a);
 		}
-	}
-
-	@Override
-	public void start() {
-		super.start();
-		Sound.LVL2.play_music();
-	}
-
-	@Override
-	public void pause() {
-		super.pause();
-		Sound.LVL2.stop();
 	}
 
 	@Override

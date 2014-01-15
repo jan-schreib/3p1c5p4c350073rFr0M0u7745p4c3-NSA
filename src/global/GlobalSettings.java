@@ -6,7 +6,6 @@ import java.io.PrintStream;
 import java.util.Scanner;
 
 import de.rType.main.Enviroment;
-import de.rType.util.Sound;
 
 public class GlobalSettings {
     // Attributes
@@ -31,9 +30,11 @@ public class GlobalSettings {
     public void setMusicMuted(boolean musicMuted) {
         this.musicMuted = musicMuted;
         if(Enviroment.getEnviroment().getGlobalSettings().getMusicMuted()) {
-            Sound.TITLE_MUSIC.stop();
+        	//Music.titel.stop();
+            //Sound.TITLE_MUSIC.stop();
         } else {
-        	Sound.TITLE_MUSIC.play_music();
+        	//Music.titel.stop();
+        	//Sound.TITLE_MUSIC.play_music();
         }
 
     }

@@ -15,7 +15,7 @@ import de.rType.model.Pair;
 import de.rType.model.VeryBadBossEnemy;
 import de.rType.repository.AlienRepository;
 import de.rType.resources.GameFonts;
-import de.rType.util.Sound;
+import de.rType.util.Music;
 import de.rType.view.GameBoard;
 
 /**
@@ -28,7 +28,7 @@ public class LevelThree extends LevelBase {
 	private static final String LEVEL_TEXT = "Level 3";
 
 	public LevelThree(GameBoard gameBoard) {
-		super(gameBoard);
+		super(gameBoard, Music.LVL3);
 	}
 
 	@Override
@@ -47,18 +47,7 @@ public class LevelThree extends LevelBase {
 			this.addAlien(t, a);
 		}
 	}
-
-	@Override
-	public void start() {
-		super.start();
-		Sound.LVL3.play_music();
-	}
-
-	@Override
-	public void pause() {
-		super.pause();
-		Sound.LVL3.stop();
-	}
+	
 	@Override
 	protected BossEnemy createLevelBoss() {
 		BossEnemy enemy = (BossEnemy) AlienRepository.getInstance().get(VeryBadBossEnemy.class);

@@ -14,10 +14,11 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
+
 import de.rType.menu.Menu;
 import de.rType.menu.MenuListener;
 import de.rType.repository.HighScores;
-import de.rType.util.Sound;
+import de.rType.util.Music;
 import de.rType.view.GameBoard;
 import de.rType.view.HighScorePanel;
 
@@ -45,9 +46,10 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 			public void newGame() {
 				if (gameBoard != null) {
 					gameBoard.setVisible(false);
+					gameBoard.stop(); 
 				}
 				menu.setVisible(false);
-				Sound.TITLE_MUSIC.stop();
+				Music.TITLE.pause();
 				gameBoard = new GameBoard() {
 
 					private static final long serialVersionUID = 1L;
@@ -124,7 +126,7 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 					setSize(Enviroment.getEnviroment().getResolution().getValueOne(), Enviroment.getEnviroment().getResolution().getValueTwo());
 					menu.getResumeItem().setVisible(false);
 					menu.setVisible(false);
-					Sound.TITLE_MUSIC.stop();
+					Music.TITLE.pause();
 					gameBoard.requestFocusInWindow();
 					gameBoard.start();
 				}
@@ -148,7 +150,7 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 		menu.getResumeItem().setVisible(pause);
 		menu.checkSelection();
 		menu.requestFocusInWindow();
-		Sound.TITLE_MUSIC.play_music();
+		Music.TITLE.play();
 	}
 
 	public static void main(String[] args) {

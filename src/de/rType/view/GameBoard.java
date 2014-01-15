@@ -81,7 +81,7 @@ public abstract class GameBoard extends JPanel implements ActionListener, Recalc
 		bg = icon.getImage();
 		setFocusable(true);
 		setBackground(Color.GREEN);
-
+		
 		// setBack
 		setDoubleBuffered(true);
 
@@ -121,6 +121,11 @@ public abstract class GameBoard extends JPanel implements ActionListener, Recalc
 
 	public void pause() {
 		currentLevel.pause();
+		timer.stop();
+	}
+	
+	public void stop(){
+		currentLevel.stop();
 		timer.stop();
 	}
 
@@ -239,7 +244,7 @@ public abstract class GameBoard extends JPanel implements ActionListener, Recalc
 			onGameEnd(this.points, true);
 		} else {
 			LevelBase next = this.levels.get(currentIdx + 1);
-			currentLevel.pause();
+			currentLevel.stop();
 			currentLevel = next;
 			currentLevel.start();
 		}

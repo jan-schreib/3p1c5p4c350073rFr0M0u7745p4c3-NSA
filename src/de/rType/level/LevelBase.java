@@ -10,9 +10,8 @@ import java.util.List;
 import javax.swing.Timer;
 
 import de.rType.model.Alien;
-
 import de.rType.model.BossEnemy;
-
+import de.rType.util.Music;
 import de.rType.view.GameBoard;
 
 /**
@@ -31,6 +30,7 @@ public abstract class LevelBase implements ActionListener {
 	private List<EnemyTask> enemyTasks = new ArrayList<EnemyTask>();
 	private List<LevelDrawTask> drawTasks = new ArrayList<LevelDrawTask>();
 	private BossEnemy levelBoss;
+	private Music music;
 
 	private class EnemyTask {
 
@@ -51,8 +51,9 @@ public abstract class LevelBase implements ActionListener {
 		}
 	}
 
-	public LevelBase(GameBoard gameBoard) {
+	public LevelBase(GameBoard gameBoard, Music music) {
 		super();
+		this.music = music;
 		this.gameBoard = gameBoard;
 		this.timer = new Timer(LEVEL_INTERVAL, this);
 		this.initializeEnemys();
@@ -123,6 +124,7 @@ public abstract class LevelBase implements ActionListener {
 	 */
 	public void pause() {
 		this.timer.stop();
+		this.music.pause();
 	}
 
 	/**
@@ -131,6 +133,12 @@ public abstract class LevelBase implements ActionListener {
 	 */
 	public void start() {
 		this.timer.start();
+		this.music.play();
+	}
+	
+	public void stop(){
+		this.timer.start();
+		this.music.pause();
 	}
 
 	public boolean isDone() {
