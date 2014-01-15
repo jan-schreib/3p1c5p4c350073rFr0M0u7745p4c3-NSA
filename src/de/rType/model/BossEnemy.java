@@ -17,30 +17,33 @@ public class BossEnemy extends Alien implements ActionListener {
 
 	private Timer timer;
 
+	private int minX = 0;
 	private int minY = 50;
 	private int maxY = 0;
 
 	private enum DIR {
-		UP, DOWN
+		UP, DOWN, LEFT
 	}
 
-	private DIR currentDirection = DIR.UP;
+	private DIR currentDirection = DIR.LEFT;
 	private static final String BOSSPIC = "/de/rType/resources/alien90.png";
-	
+
 	public BossEnemy() {
 		super();
 		timer = new Timer(1000, this);
 		setImage(new ImageIcon(this.getClass().getResource(BOSSPIC)).getImage());
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
+		minX = Math.round((float) (res.getValueOne() * 0.6));
 		minY = Math.round((float) (res.getValueTwo() * 0.3));
 		maxY = Math.round((float) (res.getValueTwo() * 0.7));
-		setPosition(res.getValueOne() - 150 - hitbox.width, Math.round((float) (res.getValueTwo() * 0.5)));
+		setPosition(res.getValueOne(), Math.round((float) (res.getValueTwo() * 0.5)));
 		setHp(20);
 	}
 
 	@Override
 	public void recalculate(Pair<Integer, Integer> resolution, double factorX, double factorY) {
 		super.recalculate(resolution, factorX, factorY);
+		minX = Math.round((float) (minX * factorX));
 		minY = Math.round((float) (minY * factorX));
 		maxY = Math.round((float) (maxY * factorX));
 	}
@@ -53,7 +56,13 @@ public class BossEnemy extends Alien implements ActionListener {
 	public void move() {
 		timer.start();
 		int moveSpeed = getSpeed() * -1 * 2;
-		if (currentDirection.equals(DIR.UP)) {
+		if (currentDirection.equals(DIR.LEFT)) {
+			if (x > minX) {
+				x -= moveSpeed;
+			} else {
+				currentDirection = DIR.UP;
+			}
+		} else if (currentDirection.equals(DIR.UP)) {
 			if (y > minY) {
 				y -= moveSpeed;
 			} else {
@@ -75,5 +84,11 @@ public class BossEnemy extends Alien implements ActionListener {
 		} else {
 			timer.stop();
 		}
+	}
+
+	@Override
+	public void reset() {
+		super.reset();
+		currentDirection = DIR.LEFT;
 	}
 }

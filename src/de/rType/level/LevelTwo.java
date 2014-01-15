@@ -38,7 +38,7 @@ public class LevelTwo extends LevelBase {
 		Alien arr[] = { new AlienOne(), new AlienTwo(), new AlienThree() };
 
 		long t = 0;
-		for (int i = 0; i < 15; i++) {
+		for (int i = 0; i < 45; i++) {
 			t = time * i;
 			int randAlien = (int) (Math.random() * 3);
 			int randPos = (int) (Math.random() * resolution.getValueTwo());
