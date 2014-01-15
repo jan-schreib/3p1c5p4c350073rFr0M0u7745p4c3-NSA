@@ -1,33 +1,83 @@
 package de.rType.level;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+
 import de.rType.main.Enviroment;
-import de.rType.main.GameBoard;
 import de.rType.model.Alien;
+import de.rType.model.AlienOne;
+import de.rType.model.AlienThree;
+import de.rType.model.AlienTwo;
+import de.rType.model.BossEnemy;
 import de.rType.model.Pair;
 import de.rType.repository.AlienRepository;
+import de.rType.resources.GameFonts;
+import de.rType.util.Sound;
+import de.rType.view.GameBoard;
 
 /**
  * 
  * @author Jo
  * 
  */
-public class LevelOne extends Level {
+public class LevelOne extends LevelBase {
+
+	private static final String LEVEL_TEXT = "Level 1";
 
 	public LevelOne(GameBoard gameBoard) {
 		super(gameBoard);
-		performLevel();
 	}
 
 	@Override
-	protected void performLevel() {
+	protected void initializeEnemys() {
 		long time = 600;
-
-		for (int i = 0; i < 100; i++) {
-			long t = time * i;
-			Alien a = AlienRepository.getInstance().get(Alien.class);
-			Pair<Integer, Integer> resolution = Enviroment.getEnviroment().getResolution();
-			a.setPosition(resolution.getValueOne(), resolution.getValueTwo() / 2 - 100);
+		Pair<Integer, Integer> resolution = Enviroment.getEnviroment().getResolution();
+		Alien arr[] = { new AlienOne(), new AlienTwo(), new AlienThree() };
+		long t = 0;
+		for (int i = 0; i < 30; i++) {
+			t = time * i;
+			int randAlien = (int) (Math.random() * 3);
+			int randPos = (int) (Math.random() * resolution.getValueTwo());
+			Alien a = AlienRepository.getInstance().get(arr[randAlien].getClass());
+			a.setPosition(resolution.getValueOne(), randPos);
 			this.addAlien(t, a);
 		}
+	}
+
+	@Override
+	public void start() {
+		super.start();
+		Sound.LVL1.play_music();
+	}
+
+	@Override
+	public void pause() {
+		super.pause();
+		Sound.LVL1.stop();
+	}
+
+	@Override
+	protected BossEnemy createLevelBoss() {
+		BossEnemy enemy = (BossEnemy) AlienRepository.getInstance().get(BossEnemy.class);
+		return enemy;
+	}
+
+	@Override
+	protected void initializeDrawTasks() {
+		this.addDrawTask(new LevelDrawTask(0, 3000) {
+
+			@Override
+			public void drawTask(Graphics g) {
+				Font normal = GameFonts.BIG;
+				FontMetrics metrix = gameBoard.getFontMetrics(normal);
+				g.setFont(normal);
+				g.setColor(Color.YELLOW);
+				Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
+				int y = (res.getValueTwo() / 2);
+				g.drawString(LEVEL_TEXT, (res.getValueOne() - metrix.stringWidth(LEVEL_TEXT)) / 2, y);
+			}
+		});
 	}
 }

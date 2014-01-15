@@ -1,7 +1,6 @@
 package de.rType.menu;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.KeyAdapter;
@@ -14,6 +13,7 @@ import javax.swing.JPanel;
 
 import de.rType.main.Enviroment;
 import de.rType.model.Pair;
+import de.rType.resources.GameFonts;
 
 /**
  * GameMenu
@@ -23,14 +23,20 @@ import de.rType.model.Pair;
  */
 public class Menu extends JPanel {
 
-	private static final Color DEFAULT_COLOR = Color.BLUE;
-	private static final Color SELECTED_COLOR = Color.WHITE;
-
 	private static final long serialVersionUID = 1L;
+	
 
 	private List<MenuItem> items;
 	private List<MenuItem> visibleList;
 	private MenuItem resumeItem;
+
+	private List<OptionMenuItem> optionsItems;
+
+	private boolean options = false;
+
+	public void setOptions(boolean options) {
+		this.options = options;
+	}
 
 	public MenuItem getResumeItem() {
 		return resumeItem;
@@ -53,7 +59,8 @@ public class Menu extends JPanel {
 									idx = idx - 1;
 									visibleList.get(idx).setSelected(true);
 								} else if (idx == 0) {
-									visibleList.get(visibleList.size() - 1).setSelected(true);
+									visibleList.get(visibleList.size() - 1)
+											.setSelected(true);
 								}
 								repaint();
 								return;
@@ -69,12 +76,21 @@ public class Menu extends JPanel {
 								return;
 							}
 						} else if (key == KeyEvent.VK_ENTER) {
-							listener.performMenuItem(item);
+							if (!options) {
+								listener.performMenuItem(item);
+							} else if (item instanceof OptionMenuItem) {
+								((OptionMenuItem) item).performChange();
+							}
 						} else if (key == KeyEvent.VK_ESCAPE) {
-							listener.resumeGame();
+							if (!options) {
+								listener.resumeGame();
+							} else {
+								options = false;
+							}
 						}
 					}
 				}
+				repaint();
 			}
 		});
 		setFocusable(true);
@@ -83,24 +99,47 @@ public class Menu extends JPanel {
 
 	public void initMenuItems() {
 		this.resumeItem = new MenuItem("Weiter", MenuItemKeys.RESUME, false);
-		items = Arrays.asList(resumeItem, new MenuItem("New Game", MenuItemKeys.NEW_GAME), new MenuItem("Options", MenuItemKeys.OPTIONS),
-				new MenuItem("Exit", MenuItemKeys.EXIT));
+		items = Arrays.asList(resumeItem, new MenuItem("New Game",
+				MenuItemKeys.NEW_GAME), new MenuItem("Highscore",
+				MenuItemKeys.HIGHSCORES), new MenuItem("Options",
+				MenuItemKeys.OPTIONS), new MenuItem("Exit", MenuItemKeys.EXIT));
 		items.get(1).setSelected(true);
+
+		this.optionsItems = Arrays.asList(new ResolutionOption(),
+				new SoundOptionItem(), new MusicOptionItem(),
+				new OptionMenuItem("Zur\u00FCck", null) {
+
+					@Override
+					public void performChange() {
+						options = false;
+						repaint();
+					}
+
+					@Override
+					public String getValueText() {
+						return "";
+					}
+				});
+		this.optionsItems.get(0).setSelected(true);
 	}
 
 	public void paint(Graphics g) {
 		super.paint(g);
 
 		setBackground(Color.BLACK);
-		Font normal = new Font("Helvetica", Font.BOLD, 20);
-		FontMetrics metr = this.getFontMetrics(normal);
-		g.setFont(normal);
+
+		FontMetrics metr = this.getFontMetrics(GameFonts.MEDIUM);
+		g.setFont(GameFonts.MEDIUM);
 
 		this.visibleList = new ArrayList<MenuItem>();
-		for (MenuItem item : items) {
-			if (item.isVisible()) {
-				visibleList.add(item);
+		if (!options) {
+			for (MenuItem item : items) {
+				if (item.isVisible()) {
+					visibleList.add(item);
+				}
 			}
+		} else {
+			visibleList.addAll(optionsItems);
 		}
 		int idx = 1;
 		for (MenuItem item : visibleList) {
@@ -109,14 +148,34 @@ public class Menu extends JPanel {
 		}
 	}
 
-	private void drawMenuItem(MenuItem item, Graphics g, FontMetrics metrix, int index, int count) {
+	private void drawMenuItem(MenuItem item, Graphics g, FontMetrics metrix,
+			int index, int count) {
 		if (item.isSelected()) {
-			g.setColor(SELECTED_COLOR);
+			g.setColor(GameFonts.SELECTED_COLOR);
 		} else {
-			g.setColor(DEFAULT_COLOR);
+			g.setColor(GameFonts.DEFAULT_COLOR);
 		}
 		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
 		int y = (res.getValueTwo() / (count + 2)) * (index);
-		g.drawString(item.getText(), (res.getValueOne() - metrix.stringWidth(item.getText())) / 2, y);
+		String text = item.getText();
+		if (item instanceof OptionMenuItem && !item.getText().equals("Zur\u00FCck")) {
+			text += ": " + ((OptionMenuItem) item).getValueText();
+		}
+		g.drawString(text, (res.getValueOne() - metrix.stringWidth(text)) / 2,
+				y);
+	}
+
+	public void checkSelection() {
+		for (MenuItem item : items) {
+			if (item.isSelected() && item.isVisible()) {
+				return;
+			}
+		}
+		for (MenuItem item : items) {
+			if (item.isVisible()) {
+				item.setSelected(true);
+				return;
+			}
+		}
 	}
 }

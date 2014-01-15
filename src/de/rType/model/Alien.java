@@ -1,6 +1,10 @@
 package de.rType.model;
 
-import de.rType.util.MathUtil;
+import java.util.List;
+
+import javax.swing.ImageIcon;
+
+import de.rType.util.Sound;
 
 /**
  * Base Enemy Alien
@@ -10,23 +14,42 @@ public class Alien extends GameObject {
 
 	private int startX;
 	private int startY;
-	private static int START_HP = 2;
+	private static int START_HP = 1;
 
-	private Pair<Integer, Integer> sinus;
-	private boolean up = true;
+	private List<Laser> lasers;
 
 	public Alien() {
-		super(0, 0, "../resources/alien_small.png", -1, START_HP);
+		super(0, 0, "/de/rType/resources/alien.png", -1, START_HP);
 	}
 
 	public Alien(int x, int y) {
-		super(x, y, "../resources/alien_small.png", -1, START_HP);
-		sinus = MathUtil.getMinMaxSinus(x, 0, 128, y);
+		super(x, y, "/de/rType/resources/alien.png", -1, START_HP);
+	}
+
+	public void setLasers(List<Laser> missiles) {
+		this.lasers = missiles;
+	}
+
+	public int getScore() {
+		return 10;
+	}
+
+	protected void fire() {
+		Laser l = new Laser(this.hitbox.x - 50, this.hitbox.y + (hitbox.height / 2), 1);
+		l.setSpeed(-3);
+		l.setImage(new ImageIcon(this.getClass().getResource("/de/rType/resources/beam_blue_small.png")).getImage());
+		lasers.add(l);
+		Sound.LASER_SMALL.play();
 	}
 
 	public void setPosition(int x, int y) {
+
+		if (y <= 15) {
+			y = 15;
+		} else if (y >= resolution.getValueTwo() - 40) {
+			y = resolution.getValueTwo() - 40;
+		}
 		super.setPosition(x, y);
-		sinus = MathUtil.getMinMaxSinus(x, 0, 128, y);
 		startX = x;
 		startY = y;
 	}
@@ -34,21 +57,14 @@ public class Alien extends GameObject {
 	@Override
 	public void move() {
 		super.move();
-		if (up) {
-			if (this.y > sinus.getValueOne()) {
-				this.y--;
-			}
-			if (this.y == sinus.getValueOne()) {
-				up = false;
-			}
-		} else {
-			if (this.y < sinus.getValueTwo()) {
-				this.y++;
-			}
-			if (this.y == sinus.getValueTwo()) {
-				up = true;
-			}
-		}
+	}
+
+	@Override
+	public void recalculate(Pair<Integer, Integer> resolution, double factorX, double factorY) {		
+		startX = Math.round((float) (startX * factorX));
+		startY = Math.round((float) (startY * factorY));
+		x = Math.round((float) (x * factorX));
+		y = Math.round((float) (y * factorY));
 	}
 
 	public void reset() {

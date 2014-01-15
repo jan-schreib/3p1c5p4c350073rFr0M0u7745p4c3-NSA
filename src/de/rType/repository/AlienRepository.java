@@ -2,16 +2,19 @@ package de.rType.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import de.rType.model.Alien;
+import de.rType.model.Recalculable;
+import de.rType.model.RecalculableContainer;
 
 /**
  * 
  * @author jo
  * 
  */
-public class AlienRepository {
+public class AlienRepository implements RecalculableContainer {
 
 	private static AlienRepository repository;
 
@@ -26,6 +29,16 @@ public class AlienRepository {
 
 	private AlienRepository() {
 		store = new HashMap<Class<? extends Alien>, List<? extends Alien>>();
+		Recalculator.getInstance().register(this);
+	}
+
+	@Override
+	public List<Recalculable> getRecalculableItems() {
+		List<Recalculable> items = new LinkedList<Recalculable>();
+		for (List<? extends Alien> data : store.values()) {
+			items.addAll(data);
+		}
+		return items;
 	}
 
 	public <T extends Alien> Alien get(Class<T> alienClass) {

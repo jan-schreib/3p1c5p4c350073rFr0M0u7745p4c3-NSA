@@ -5,7 +5,15 @@ import java.awt.Rectangle;
 
 import javax.swing.ImageIcon;
 
-abstract public class GameObject {
+import de.rType.main.Enviroment;
+
+/**
+ * Base class for all game objects.
+ * 
+ * @author Jo
+ * 
+ */
+abstract public class GameObject implements Recalculable {
 
 	protected int x;
 	protected int y;
@@ -13,6 +21,7 @@ abstract public class GameObject {
 	private Image image;
 	private int speed;
 	protected int hp; // Healthpoints
+	protected Pair<Integer, Integer> resolution = Enviroment.getEnviroment().getResolution();
 
 	public GameObject(int x, int y, String image, int speed, int hp) {
 		this.x = x;
@@ -30,6 +39,7 @@ abstract public class GameObject {
 
 	public void setX(int x) {
 		this.x = x;
+		this.hitbox.x = x;
 	}
 
 	public int getY() {
@@ -39,6 +49,7 @@ abstract public class GameObject {
 	public void setY(int y) {
 		y = y - hitbox.height;
 		this.y = y;
+		this.hitbox.y = y;
 	}
 
 	public void setPosition(int x, int y) {
@@ -61,6 +72,7 @@ abstract public class GameObject {
 
 	public void setImage(Image image) {
 		this.image = image;
+		this.hitbox = new Rectangle(x, y, this.image.getWidth(null), this.image.getHeight(null));
 	}
 
 	public int getSpeed() {
@@ -81,7 +93,8 @@ abstract public class GameObject {
 
 	public void move() {
 		x += speed;
-		if (x > 1200 || x < 0) {
+		Pair<Integer, Integer> res = Enviroment.getEnviroment().getResolution();
+		if (x > res.getValueOne() || x < 0) {
 			hp = 0;
 		}
 	}

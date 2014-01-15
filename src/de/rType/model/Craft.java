@@ -1,7 +1,8 @@
 package de.rType.model;
 
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import de.rType.main.Enviroment;
 import de.rType.util.Sound;
@@ -13,21 +14,53 @@ import de.rType.util.Sound;
  */
 public class Craft extends GameObject {
 
-	private static final String DEFAULT_CRAFT = "../resources/craft.png";
+	private static final String DEFAULT_CRAFT = "/de/rType/resources/craft_new.png";
 
 	private int dx;
 	private int dy;
-	private ArrayList<Missile> missiles;
+	private int firepower = 0;
+	private static int X_MAX = Enviroment.getEnviroment().getResolution().getValueOne();
+	private static int Y_MAX = 500;
+	private static int X_MIN = 0;
+	private static int Y_MIN = 0;
+	private List<Laser> lasers;
 
 	public Craft() {
 		super(40, 60, DEFAULT_CRAFT, 1, 100);
-		missiles = new ArrayList<Missile>();
+		X_MAX = Enviroment.getEnviroment().getResolution().getValueOne() - hitbox.width;
+		Y_MAX = Enviroment.getEnviroment().getResolution().getValueTwo() - hitbox.height;
+	}
+
+	public void setMissileList(List<Laser> missiles) {
+		this.lasers = missiles;
+	}
+
+	@Override
+	public void recalculate(Pair<Integer, Integer> resolution, double factorX, double factorY) {
+		int newX = Math.round((float) (factorX * x));
+		setX(newX);
+		int newY = Math.round((float) (factorY * y));
+		setY(newY);
+		X_MAX = resolution.getValueOne() - (hitbox.width);
+		Y_MAX = resolution.getValueTwo() - (hitbox.height);
+	}
+
+	public int getFirePower() {
+		return this.firepower;
 	}
 
 	public void move() {
 
-		x += dx;
-		y += dy;
+		if (x < X_MAX && x > X_MIN) {
+			x += dx;
+		} else {
+			x--;
+		}
+		if (y < Y_MAX && y > Y_MIN) {
+			y += dy;
+		} else {
+			y--;
+		}
 
 		if (x < 1) {
 			x = 1;
@@ -38,64 +71,69 @@ public class Craft extends GameObject {
 		}
 	}
 
-	public ArrayList<Missile> getMissiles() {
-		return missiles;
+	public List<Laser> getLasers() {
+		return lasers;
 	}
 
-	/**
-	 * TODO Heraus fliegen aus dem frame muss verhindert werden
-	 * && !((x + 3) > (res.getValueOne() - hitbox.width))
-	 */
-	/**
-	 * TODO Heraus fliegen aus dem frame muss verhindert werden
-	 * && !((y + 3) > (res.getValueTwo() - hitbox.height))
-	 */
 	public void keyPressed(KeyEvent e) {
 
 		int key = e.getKeyCode();
-		  switch(key){
-	        case KeyEvent.VK_SPACE:
-	        	fire();
-	            break;
-	        case KeyEvent.VK_LEFT:
-	        	dx = -3;
-	            break;
-	        case KeyEvent.VK_RIGHT:
-	        	dx = 3;
-	            break;
-	        case KeyEvent.VK_UP:
-	        	dy = -3;
-	            break;
-	        case KeyEvent.VK_DOWN:
-	        	dy = 3;
-	            break;
-	        default:
-	            break;
-	        }
+		switch (key) {
+		case KeyEvent.VK_SPACE:
+			firepower++;
+			Sound.BUILD_UP.play();
+			break;
+		case KeyEvent.VK_LEFT:
+			dx = -3;
+			break;
+		case KeyEvent.VK_RIGHT:
+			dx = 3;
+			break;
+		case KeyEvent.VK_UP:
+			dy = -3;
+			break;
+		case KeyEvent.VK_DOWN:
+			dy = 3;
+			break;
+		default:
+			break;
+		}
 	}
 
 	public void fire() {
-		missiles.add(new Missile(this.hitbox.x + hitbox.width, this.hitbox.y + (hitbox.height / 2) - 5));
-		Sound.fire.play();
+		Rectangle hitbox = this.getHitbox();
+		lasers.add(new Laser(hitbox.x + hitbox.width, hitbox.y + (hitbox.height / 2), this.firepower));
+		Sound.BUILD_UP.stop();
+		if (this.firepower <= 3) {
+			Sound.LASER_SMALL.play();
+		} else if (this.firepower <= 6) {
+			Sound.LASER_MEDIUM.play();
+		} else {
+			Sound.LASER_HUGE.play();
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-		  switch(key){
-	        case KeyEvent.VK_LEFT:
-	        	dx = 0;
-	            break;
-	        case KeyEvent.VK_RIGHT:
-	        	dx = 0;
-	            break;
-	        case KeyEvent.VK_UP:
-	        	dy = 0;
-	            break;
-	        case KeyEvent.VK_DOWN:
-	        	dy = 0;
-	            break;
-	        default:
-	            break;
-	        }
+		switch (key) {
+		case KeyEvent.VK_SPACE:
+			fire();
+			firepower = 0;
+			break;
+		case KeyEvent.VK_LEFT:
+			dx = 0;
+			break;
+		case KeyEvent.VK_RIGHT:
+			dx = 0;
+			break;
+		case KeyEvent.VK_UP:
+			dy = 0;
+			break;
+		case KeyEvent.VK_DOWN:
+			dy = 0;
+			break;
+		default:
+			break;
+		}
 	}
 }
