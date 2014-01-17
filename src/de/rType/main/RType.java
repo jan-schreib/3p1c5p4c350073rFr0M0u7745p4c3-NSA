@@ -213,7 +213,7 @@ public class RType extends JFrame implements CollectionGame, WindowListener {
 		/**
 		 * DEF MODE EXIT GAME
 		 */
-		System.exit(0);
+		//System.exit(0);
 		this.collectionMenu.returnToMainMenu();
 	}
 
